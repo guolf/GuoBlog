@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">cnBeta Plus</string>
+    <string name="choise_browser">选择浏览器</string>
+    <string name="load_fail">加载失败 ,点击重试。</string>
+    <string name="end">-- The End --</string>
+    <string name="theme">主题配色</string>
+
+    <string name="share_templates">我觉得这篇新闻不错 《%1$s》 %2$s 分享自 cnBeta Plus。</string>
+
+    <string name="message_comment_close">评论已关闭</string>
+    <string name="message_no_comment">暂无评论，快抢沙发吧。</string>
+    <string name="message_new_news">新增%d条新闻  *\\(๑• ₃ •๑)*</string>
+    <string name="message_flush_success">加载成功  *\\(๑• ₃ •๑)*</string>
+    <string name="message_no_new_news">暂时没有新的新闻 (๑•́ ₃ •̀๑) </string>
+    <string name="message_no_network">无网络或连接超时   ( &gt;﹏&lt;。)～</string>
+    <string name="message_load_from_cache">无可用网络，加载之前的缓存  ( &gt;﹏&lt;。)～</string>
+    <string name="message_data_structure_change"> ლ(°Д°ლ) 网站又改版啦。。快联系联系开发者吧。 </string>
+    <string name="message_no_subscribe" >还没有关注任何新闻主题。\n\n 左滑界面开始关注吧。</string>
+
+    <string name="menu_reflush">刷新</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_view_in_browser">浏览器中查看</string>
+
+
+    <string name="pref_about_title">关于</string>
+    <string name="pref_version_title">版本</string>
+    <string name="pref_author_title">开发者</string>
+    <string name="pref_version_key">version</string>
+    <string name="pref_general_category">通用</string>
+    <string name="pref_auto_page_on">自动加载更多</string>
+    <string name="pref_author_summary">远望の无限</string>
+    <string name="pref_auto_page_off">点击加载更多</string>
+    <string name="pref_auto_page_key">autoPageLoad</string>
+    <string name="pref_auto_reflush_title">首次启动自动刷新</string>
+    <string name="pref_auto_page_title">自动加载更多</string>
+    <string name="pref_auto_reflush_on">自动刷新列表</string>
+    <string name="pref_auto_reflush_key">autoReflush</string>
+    <string name="pref_auto_reflush_off">手动刷新列表</string>
+    <string name="pref_about_summary">cnBeta 第三方新闻客户端</string>
+    <string name="pref_hardware_accelerated_title">WebView硬件加速</string>
+    <string name="pref_hardware_accelerated_key">hardwareAccelerated</string>
+    <string name="pref_hardware_accelerated_summary">关闭可能会造成WebView滑动卡顿,并且造成html5视频播放无画面。</string>
+    <string name="pref_show_list_news_image_key">showListImage</string>
+    <string name="pref_show_list_news_image_title">新闻列表显示图片</string>
+    <string name="pref_show_list_news_image_summary">开启后会消耗较多的流量，平均消耗200K~600K左右。</string>
+    <string name="pref_debug_key">debug</string>
+    <string name="pref_debug_title">调试模式</string>
+    <string name="pref_debug_summary">启用调试模式(重启应用生效)</string>
+    <string name="pref_clean_cache_key">cleanCache</string>
+    <string name="pref_clean_cache_title">清理应用缓存</string>
+    <string name="pref_advience_categroy">高级</string>
+    <string name="pref_show_large_image_key">largeImage</string>
+    <string name="pref_show_large_image_title">新闻列表显示大图</string>
+    <string name="pref_show_large_image_summary">开启后将会消耗大量流量,平均消耗大于 2M, 推荐在Wifi下使用。</string>
+    <string name="pref_swipeback_key">swipeback</string>
+    <string name="pref_swipeback_title">启用滑动返回</string>
+    <string name="pref_swipeback_summary">启用后从屏幕左侧滑向右侧可以返回上一级</string>
+    <string name="pref_source_title">源代码</string>
+    <string name="pref_source_summary">https://git.oschina.net/ywwxhz/cnBeta-reader</string>
+    <string name="pref_show_detail_image_key">show_detail_image</string>
+    <string name="pref_show_detail_image_title">正文显示图片</string>
+    <string name="pref_show_detail_image_summary">新闻正文显示图片</string>
+    <string name="pref_reverse_key">reverse_key</string>
+    <string name="pref_reverse_title">优先显示最新评论</string>
+    <string name="pref_reverse_on">优先显示最新评论</string>
+    <string name="pref_reverse_off">优先显示最早评论</string>
+
+
+    <string name="button_temporary_save">确定</string>
+    <string name="button_restore_default">默认</string>
+    <string name="buttom_permanent_save">保存</string>
+    <string name="menu_font">字体</string>
+    <string name="menu_book_mark">收藏</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="pref_show_emoji_key">emoji</string>
+    <string name="pref_show_emoji_title">评论显示表情</string>
+    <string name="pref_show_emoji_summary">评论是否显示表情</string>
+    <string name="pref_offline_image_key">pref_offline_image</string>
+    <string name="pref_offline_image_title">离线缓存新闻图片</string>
+    <string name="pref_offline_image_summary">离线缓存时是否缓存图片。开启该功能时离线缓存速度将会变慢。</string>
+    <string name="pref_flash_to_html5_key">flash_to_html5_key</string>
+    <string name="pref_flash_to_html5_summary">将资讯详情中的Flash播放器转换为Html5播放器。目前已支持视频源为优酷、土豆、新浪和QQ的视频。\nPS:目前需要手动点击Flash Video才能进行转换。暂时无法屏蔽视频源中内嵌的广告。</string>
+    <string name="pref_flash_to_html5_title">Flash to Html5</string>
+    <string name="pref_new_detail_key">new detail design</string>
+    <string name="pref_new_detail_summary">新版新闻详情界面支持左滑切换到评论页面。</string>
+    <string name="pref_new_detail_title">使用新版新闻详情界面</string>
+    <string name="pref_preload_image_key">image-preload</string>
+    <string name="pref_preload_image_title">预加载图片</string>
+    <string name="pref_preload_image_summary">查看大图时是否预加载两侧图片</string>
+
+</resources>
