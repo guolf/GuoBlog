@@ -53,12 +53,14 @@ public class NetKit {
         return instance;
     }
 
-    public void getNewslistByPage(int page, String type, ResponseHandlerInterface handlerInterface) {
+    // 获取文章列表
+    public void getArticlelistByPage(int page, String type, ResponseHandlerInterface handlerInterface) {
         RequestParams params = new RequestParams();
         params.add("type", type);
-        params.add("page", page + "");
+        params.add("cpage", page + "");
+        params.add("pagesize","10");
         params.add("_", System.currentTimeMillis() + "");
-        mClient.get(null, Configure.NEWS_LIST_URL, getAuthHeader(), params, handlerInterface);
+        mClient.get(null, Configure.ARTICLE_LIST_URL, getAuthHeader(), params, handlerInterface);
     }
 
     public void getNewslistByTopic(int page, String type, ResponseHandlerInterface handlerInterface) {
@@ -77,6 +79,13 @@ public class NetKit {
         mSyncHttpClient.get(Configure.buildArticleUrl(sid), handlerInterface);
     }
 
+    public void loginMobile(String username,String password,ResponseHandlerInterface handlerInterface){
+        RequestParams params = new RequestParams();
+        params.add("username",username);
+        params.add("password",password);
+        mClient.post(null,Configure.LOGIN_RUL,getAuthHeader(),params,CONTENT_TYPE,handlerInterface);
+    }
+
     public void getCommentBySnAndSid(String sn, String sid, ResponseHandlerInterface handlerInterface) {
         RequestParams params = new RequestParams();
         params.add("op", "1," + sid + "," + sn);
@@ -92,10 +101,11 @@ public class NetKit {
         mClient.post(null, Configure.COMMENT_VIEW, getAuthHeader(), params, CONTENT_TYPE, handlerInterface);
     }
 
+    // Origin 只用于post请求，Referer 用于所有请求，都表示请求来源
     public static Header[] getAuthHeader() {
         return new Header[]{
-                new BasicHeader("Referer", "http://www.cnbeta.com/"),
-                new BasicHeader("Origin", "http://www.cnbeta.com"),
+                new BasicHeader("Referer", "http://www.guolingfa.cn/"),
+                new BasicHeader("Origin", "http://www.guolingfa.cn"),
                 new BasicHeader("X-Requested-With", "XMLHttpRequest")
         };
     }

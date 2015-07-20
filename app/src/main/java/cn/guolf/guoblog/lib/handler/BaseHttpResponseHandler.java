@@ -31,8 +31,8 @@ public abstract class BaseHttpResponseHandler<T> extends GsonHttpResponseHandler
     @Override
     public void onSuccess(int statusCode, Header[] headers, String responseString, ResponseObject<T> object) {
         Log.i("responseString","responseString:"+responseString);
-        if ("success".equals(object.getState())) {
-            onSuccess(object.getResult());
+        if ("00".equals(object.getResultCode())) {
+            onSuccess(object.getData());
         } else {
             onError(statusCode, headers, responseString, new Exception("load news list fail"));
         }

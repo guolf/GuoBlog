@@ -1,25 +1,37 @@
+
 package cn.guolf.guoblog.entity;
+
+import java.util.List;
 
 /**
  * Created by ywwxhz on 2014/11/2.
  */
 public class ResponseObject<T> {
-    private T result;
-    private String state;
+    private T Data;
+    private String ResultCode;
+    private String ResultMsg;
 
-    public T getResult() {
-        return result;
+    public T getData() {
+        return Data;
     }
 
-    public void setResult(T result) {
-        this.result = result;
+    public void setData(T data) {
+        Data = data;
     }
 
-    public String getState() {
-        return state;
+    public String getResultCode() {
+        return ResultCode;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setResultCode(String resultCode) {
+        ResultCode = resultCode;
+    }
+
+    public String getResultMsg() {
+        return ResultMsg;
+    }
+
+    public void setResultMsg(String resultMsg) {
+        ResultMsg = resultMsg;
     }
 }

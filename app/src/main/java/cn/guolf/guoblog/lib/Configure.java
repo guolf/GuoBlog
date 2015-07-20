@@ -4,14 +4,17 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
- * cnBetaReader
- *
- * Created by 远望の无限(ywwxhz) on 2014/11/1 17:55.
+ * API配置
  */
 public class Configure {
 
-    public static final String BASE_URL = "http://www.cnbeta.com";
+    public static final String BASE_URL = "http://www.guolingfa.cn/mobile/";
+    public static final String LOGIN_RUL= BASE_URL+"LoginMobile";
+    public static final String ARTICLE_LIST_URL=BASE_URL+"getarticlelist";
+
+
     public static final String NEWS_LIST_URL = BASE_URL + "/more";
+
     private static final String ARTICLE_URL = BASE_URL + "/articles/%s.htm";
     public static final String TOPIC_NEWS_LIST = BASE_URL+"/topics/more";
     public static final String COMMENT_URL = BASE_URL + "/cmt";

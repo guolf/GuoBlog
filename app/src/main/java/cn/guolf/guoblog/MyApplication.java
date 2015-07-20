@@ -43,7 +43,7 @@ public class MyApplication extends Application {
         FileCacheKit.getInstance(this);
         MyCrashHandler.getInstance().init(this);
         initImageLoader(getApplicationContext());
-        Emoticons.init(this);
+        //Emoticons.init(this);
         mDbUtils = DbUtils.create(this);
     }
 

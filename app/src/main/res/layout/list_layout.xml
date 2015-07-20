@@ -1,0 +1,44 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="@string/load_fail"
+        android:textSize="18sp"
+        android:visibility="gone"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:divider="@null"
+            android:dividerHeight="3dp"
+            android:clipToPadding="false"
+            android:listSelector="@android:color/transparent"
+            android:padding="6dp"
+            android:scrollbarStyle="outsideOverlay"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="20dp"
+        android:alpha="0.8"
+        android:visibility="gone"
+        app:fab_colorNormal="?colorPrimary"
+        app:fab_colorPressed="?colorPrimaryDark"
+        app:fab_shadow="true"/>
+
+</FrameLayout>
