@@ -6,16 +6,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.entity.ArticleItem;
 import cn.guolf.guoblog.fragments.ArticleDetailFragment;
+import cn.guolf.guoblog.lib.kits.LogKits;
 import cn.guolf.guoblog.lib.kits.PrefKit;
 import cn.guolf.guoblog.widget.FixViewPager;
 
@@ -40,7 +43,7 @@ public class ArticleDetailActivity extends ExtendBaseActivity implements Article
             title = bundle.getString(ArticleDetailFragment.ARTICLE_TITLE_KEY);
             setTitle("详情：" + title);
             contentView = (ViewGroup) findViewById(R.id.content);
-            fragments.add(ArticleDetailFragment.getInstance(bundle.getInt(ArticleDetailFragment.ARTICLE_SID_KEY), title));
+            fragments.add(ArticleDetailFragment.getInstance(bundle.getString(ArticleDetailFragment.ARTICLE_SID_KEY) , title));
             if (isNewDesignMode) {
                 setContentView(R.layout.pager_layout);
                 pager = (FixViewPager) findViewById(R.id.pager);
@@ -80,7 +83,7 @@ public class ArticleDetailActivity extends ExtendBaseActivity implements Article
 
     @Override
     public void onArticleLoadFinish(ArticleItem item, boolean success) {
-
+        LogKits.i("onArticleLoadFinish:" + item.getArticleTitle());
     }
 
     @Override
@@ -99,7 +102,7 @@ public class ArticleDetailActivity extends ExtendBaseActivity implements Article
     }
 
     @Override
-    public void CommentAction(int sid, String sn, String title) {
+    public void CommentAction(String sid, String title) {
 
     }
 

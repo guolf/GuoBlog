@@ -63,6 +63,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     static {
         manger.registerFragment("全部文章", new AllArticleListFragment());
+        manger.registerFragment("慢生活", new LifeArticleListFragment());
+        manger.registerFragment("学无止境", new LearnArticleListFragment());
+        manger.registerFragment("碎言碎语", new TalkListFragment());
         manger.registerFragment("偏好设置", new SettingFragment());
     }
 

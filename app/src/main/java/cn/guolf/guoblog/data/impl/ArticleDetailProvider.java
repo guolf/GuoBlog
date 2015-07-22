@@ -19,6 +19,7 @@ import cn.guolf.guoblog.data.BaseDataProvider;
 import cn.guolf.guoblog.entity.ArticleItem;
 import cn.guolf.guoblog.lib.Configure;
 import cn.guolf.guoblog.lib.kits.FileCacheKit;
+import cn.guolf.guoblog.lib.kits.LogKits;
 import cn.guolf.guoblog.lib.kits.NetKit;
 import cn.guolf.guoblog.lib.kits.Toolkit;
 
@@ -32,6 +33,7 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
         @Override
         public void onStart() {
             if(callback!=null) {
+                LogKits.i("onStart");
                 callback.onLoadStart();
             }
         }
@@ -39,6 +41,7 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
         @Override
         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             if(callback!=null) {
+                LogKits.i("onFailure:"+responseString);
                 callback.onLoadFailure();
             }
         }
@@ -46,6 +49,7 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
         @Override
         public void onSuccess(int statusCode, Header[] headers, String responseString) {
             if(callback!=null){
+                LogKits.i("onSuccess:"+responseString);
                 callback.onLoadSuccess(responseString);
             }
         }
@@ -61,7 +65,7 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
     }
 
     public void loadArticleAsyc(String sid){
-        NetKit.getInstance().getNewsBySid(sid, handler);
+        NetKit.getInstance().getArticleDetailByUrl(sid, handler);
     }
 
     public static boolean handleResponceString(ArticleItem item,String resp,boolean shouldCache){
@@ -69,35 +73,29 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
     }
 
     public static boolean handleResponceString(ArticleItem item,String resp,boolean shouldCache,boolean cacheImage){
-//        Document doc = Jsoup.parse(resp);
-//        Elements newsHeadlines = doc.select(".body");
-//        item.setFrom(newsHeadlines.select(".where").html());
-//        item.setInputtime(newsHeadlines.select(".date").html());
-//        Elements introduce = newsHeadlines.select(".introduction");
-//        introduce.select("div").remove();
-//        item.setHometext(introduce.html());
-//        Elements content = newsHeadlines.select(".content");
-//        if(cacheImage){
-//            Elements images = content.select("img");
-//            for(Element image:images){
-//                Bitmap img = ImageLoader.getInstance().loadImageSync(image.attr("src"), MyApplication.getDefaultDisplayOption());
-//                if(img!=null) {
-//                    img.recycle();
-//                }
-//            }
-//        }
-//        item.setContent(content.html());
-//        Matcher snMatcher = Configure.SN_PATTERN.matcher(resp);
-//        if (snMatcher.find())
-//            item.setSN(snMatcher.group(1));
-//        if(item.getContent()!=null&&item.getContent().length()>0){
-//            if(shouldCache) {
-//                FileCacheKit.getInstance().put(item.getArticleId() + "", Toolkit.getGson().toJson(item));
-//            }
-//            return true;
-//        }else{
-//            return false;
-//        }
-        return false;
+        Document doc = Jsoup.parse(resp);
+        Elements newsHeadlines = doc.select(".blogs");
+        //item.setFrom(newsHeadlines.select(".where").html());
+        item.setPublishedTime(newsHeadlines.select(".d_time").html());
+
+        Elements content = newsHeadlines.select(".infos");
+        if(cacheImage){
+            Elements images = content.select("img");
+            for(Element image:images){
+                Bitmap img = ImageLoader.getInstance().loadImageSync(image.attr("src"), MyApplication.getDefaultDisplayOption());
+                if(img!=null) {
+                    img.recycle();
+                }
+            }
+        }
+        item.setArticleContent(content.html());
+        if(item.getArticleContent()!=null&&item.getArticleContent().length()>0){
+            if(shouldCache) {
+                FileCacheKit.getInstance().put(item.getArticleId() + "", Toolkit.getGson().toJson(item));
+            }
+            return true;
+        }else{
+            return false;
+        }
     }
 }

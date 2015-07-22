@@ -63,6 +63,18 @@ public class NetKit {
         mClient.get(null, Configure.ARTICLE_LIST_URL, getAuthHeader(), params, handlerInterface);
     }
 
+    // 获取文章详情
+    public void getArticleDetailById(String id,ResponseHandlerInterface handlerInterface){
+        LogKits.i("getArticleDetailById:" + id);
+        RequestParams params = new RequestParams();
+        params.add("id",id);
+        mClient.get(null,Configure.ARTICLE_DETAIL_URL,getAuthHeader(),params,handlerInterface);
+    }
+
+    public void getArticleDetailByUrl(String id,ResponseHandlerInterface handlerInterface){
+        mClient.get(Configure.buildArticleUrl(id),handlerInterface);
+    }
+
     public void getNewslistByTopic(int page, String type, ResponseHandlerInterface handlerInterface) {
         RequestParams params = new RequestParams();
         params.add("id", type);

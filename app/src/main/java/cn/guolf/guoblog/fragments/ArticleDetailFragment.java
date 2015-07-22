@@ -25,21 +25,21 @@ public class ArticleDetailFragment extends Fragment{
     public static final String ARTICLE_SID_KEY = "key_article_sid";
     public static final String ARTICLE_TITLE_KEY = "key_article_title";
     private ArticleDetailProcesser processer;
-    private int sid;
+    private String sid;
     private String title;
 
     public interface NewsDetailCallBack{
         void onArticleLoadFinish(ArticleItem item,boolean success);
-        void CommentAction(int sid,String sn,String title);
+        void CommentAction(String sid,String title);
         void onVideoFullScreen(boolean isFullScreen);
         void onShowHtmlVideoView(View html5VideoView);
         void onHideHtmlVideoView(View html5VideoView);
     }
 
-    public static ArticleDetailFragment getInstance(int sid,String title){
+    public static ArticleDetailFragment getInstance(String sid,String title){
         ArticleDetailFragment f = new ArticleDetailFragment();
         Bundle args = new Bundle();
-        args.putInt(ARTICLE_SID_KEY,sid);
+        args.putString(ARTICLE_SID_KEY, sid);
         args.putString(ARTICLE_TITLE_KEY, title);
         f.setArguments(args);
         return f;
@@ -50,7 +50,7 @@ public class ArticleDetailFragment extends Fragment{
         setHasOptionsMenu(true);
         Bundle args = getArguments();
         if(args!=null&&args.containsKey(ARTICLE_SID_KEY)&&args.containsKey(ARTICLE_TITLE_KEY)){
-            sid = args.getInt(ARTICLE_SID_KEY);
+            sid = args.getString(ARTICLE_SID_KEY);
             title = args.getString(ARTICLE_TITLE_KEY);
         }
     }
