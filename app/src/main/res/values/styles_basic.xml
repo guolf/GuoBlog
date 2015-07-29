@@ -24,6 +24,7 @@
         <item name="subTitleColor">#5d5b5b</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="lineColor">@color/light_line_color</item>
     </style>
     <style name="Theme.Basic.TEAL">
         <item name="colorPrimary">#009688</item>
@@ -68,6 +69,7 @@
         <item name="subTitleColor">#707e94</item>
         <item name="refBackground">@drawable/ref_background_normal_night</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat</item>
+        <item name="lineColor">@color/night_line_color</item>
     </style>
 
     <style name="Theme.Basic.NoAnim">

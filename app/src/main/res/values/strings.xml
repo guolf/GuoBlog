@@ -23,7 +23,7 @@
     <string name="menu_share">分享</string>
     <string name="menu_view_in_browser">浏览器中查看</string>
 
-
+    <string name="pref_about_key">about</string>
     <string name="pref_about_title">关于</string>
     <string name="pref_version_title">版本</string>
     <string name="pref_author_title">开发者</string>
@@ -92,4 +92,10 @@
     <string name="pref_preload_image_title">预加载图片</string>
     <string name="pref_preload_image_summary">查看大图时是否预加载两侧图片</string>
 
+    <string name="update">检查新版本</string>
+    <string name="about">关于GuoBlog</string>
+    <string name="feedback">意见反馈</string>
+    <string name="site">官网</string>
+    <string name="knowmore">了解更多</string>
+    <string name="copyright">Copyright © GuoBlog All rights reserved.</string>
 </resources>

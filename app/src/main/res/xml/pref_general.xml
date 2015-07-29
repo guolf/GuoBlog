@@ -23,29 +23,29 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_show_list_news_image_key"
-            android:title="@string/pref_show_list_news_image_title"
-            android:summary="@string/pref_show_list_news_image_summary" />
+            android:summary="@string/pref_show_list_news_image_summary"
+            android:title="@string/pref_show_list_news_image_title" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="@string/pref_show_list_news_image_key"
             android:key="@string/pref_show_large_image_key"
-            android:title="@string/pref_show_large_image_title"
-            android:summary="@string/pref_show_large_image_summary" />
+            android:summary="@string/pref_show_large_image_summary"
+            android:title="@string/pref_show_large_image_title" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_show_detail_image_key"
-            android:title="@string/pref_show_detail_image_title"
-            android:summary="@string/pref_show_detail_image_summary" />
+            android:summary="@string/pref_show_detail_image_summary"
+            android:title="@string/pref_show_detail_image_title" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_preload_image_key"
-            android:title="@string/pref_preload_image_title"
-            android:summary="@string/pref_preload_image_summary" />
+            android:summary="@string/pref_preload_image_summary"
+            android:title="@string/pref_preload_image_title" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/pref_offline_image_key"
-            android:title="@string/pref_offline_image_title"
-            android:summary="@string/pref_offline_image_summary" />
+            android:summary="@string/pref_offline_image_summary"
+            android:title="@string/pref_offline_image_title" />
         <Preference
             android:key="@string/pref_clean_cache_key"
             android:title="@string/pref_clean_cache_title" />
@@ -55,27 +55,27 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_reverse_key"
-            android:title="@string/pref_reverse_title"
+            android:summaryOff="@string/pref_reverse_off"
             android:summaryOn="@string/pref_reverse_on"
-            android:summaryOff="@string/pref_reverse_off" />
+            android:title="@string/pref_reverse_title" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_show_emoji_key"
-            android:title="@string/pref_show_emoji_title"
-            android:summary="@string/pref_show_emoji_summary"/>
+            android:summary="@string/pref_show_emoji_summary"
+            android:title="@string/pref_show_emoji_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_advience_categroy">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/pref_debug_key"
-            android:title="@string/pref_debug_title"
-            android:summary="@string/pref_debug_summary" />
+            android:summary="@string/pref_debug_summary"
+            android:title="@string/pref_debug_title" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_swipeback_key"
-            android:title="@string/pref_swipeback_title"
-            android:summary="@string/pref_swipeback_summary" />
+            android:summary="@string/pref_swipeback_summary"
+            android:title="@string/pref_swipeback_title" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_new_detail_key"
@@ -89,11 +89,12 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_about_title">
         <Preference
+            android:key="@string/pref_about_key"
             android:summary="@string/pref_about_summary"
             android:title="@string/pref_about_title" />
         <Preference
-            android:title="@string/pref_source_title"
-            android:summary="@string/pref_source_summary">
+            android:summary="@string/pref_source_summary"
+            android:title="@string/pref_source_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="@string/pref_source_summary" />
