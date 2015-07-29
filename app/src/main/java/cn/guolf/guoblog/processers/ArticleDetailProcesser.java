@@ -55,7 +55,6 @@ import cn.guolf.guoblog.lib.Configure;
 import cn.guolf.guoblog.lib.CroutonStyle;
 import cn.guolf.guoblog.lib.ThemeManger;
 import cn.guolf.guoblog.lib.database.exception.DbException;
-import cn.guolf.guoblog.lib.kits.LogKits;
 import cn.guolf.guoblog.lib.kits.NetKit;
 import cn.guolf.guoblog.lib.kits.PrefKit;
 import cn.guolf.guoblog.lib.kits.Toolkit;
@@ -152,8 +151,6 @@ public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDet
 
     @Override
     public void onLoadSuccess(final String resp) {
-        LogKits.i("onLoadSuccess:" + resp);
-        //if (Configure.STANDRA_PATTERN.matcher(resp).find()) {
             new AsyncTask<String, String, Boolean>() {
                 @Override
                 protected Boolean doInBackground(String... strings) {
@@ -171,9 +168,6 @@ public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDet
                     }
                 }
             }.execute(resp);
-//        } else {
-//            onLoadFailure();
-//        }
     }
 
     private void blindData(ArticleItem mNews) {
@@ -420,6 +414,31 @@ public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDet
         }
     }
 
+    private void onShowHtmlVideoView(View html5VideoView) {
+
+        if (callBack != null) {
+            callBack.onVideoFullScreen(true);
+            callBack.onShowHtmlVideoView(html5VideoView);
+        } else {
+            ViewGroup parent = (ViewGroup) mActivity.findViewById(R.id.content);
+            parent.addView(html5VideoView);
+        }
+        mWebView.setVisibility(View.GONE);
+        mActionButtom.setVisibility(View.GONE);
+    }
+
+    private void onHideHtmlVideoView(View html5VideoView) {
+        if (callBack != null) {
+            callBack.onVideoFullScreen(false);
+            callBack.onHideHtmlVideoView(html5VideoView);
+        } else {
+            ViewGroup parent = (ViewGroup) mActivity.findViewById(R.id.content);
+            parent.removeView(html5VideoView);
+        }
+        mWebView.setVisibility(View.VISIBLE);
+        mActionButtom.setVisibility(View.VISIBLE);
+    }
+
     private class JavaScriptInterface {
         Context mContext;
 
@@ -543,8 +562,8 @@ public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDet
     }
 
     class VideoWebChromeClient extends WebChromeClient {
-        private View myView = null;
         CustomViewCallback myCallback = null;
+        private View myView = null;
         private int orientation;
         private int requiredOrientation;
 
@@ -581,30 +600,5 @@ public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDet
                 myView = null;
             }
         }
-    }
-
-    private void onShowHtmlVideoView(View html5VideoView){
-
-        if (callBack != null) {
-            callBack.onVideoFullScreen(true);
-            callBack.onShowHtmlVideoView(html5VideoView);
-        }else{
-            ViewGroup parent = (ViewGroup) mActivity.findViewById(R.id.content);
-            parent.addView(html5VideoView);
-        }
-        mWebView.setVisibility(View.GONE);
-        mActionButtom.setVisibility(View.GONE);
-    }
-
-    private void onHideHtmlVideoView(View html5VideoView){
-        if (callBack != null) {
-            callBack.onVideoFullScreen(false);
-            callBack.onHideHtmlVideoView(html5VideoView);
-        }else{
-            ViewGroup parent = (ViewGroup) mActivity.findViewById(R.id.content);
-            parent.removeView(html5VideoView);
-        }
-        mWebView.setVisibility(View.VISIBLE);
-        mActionButtom.setVisibility(View.VISIBLE);
     }
 }

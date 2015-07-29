@@ -7,7 +7,7 @@
     <string name="end">-- The End --</string>
     <string name="theme">主题配色</string>
 
-    <string name="share_templates">我觉得这篇新闻不错 《%1$s》 %2$s 分享自 GuoBlog。</string>
+    <string name="share_templates">我觉得这篇文章不错 《%1$s》 %2$s 分享自 GuoBlog。</string>
 
     <string name="message_comment_close">评论已关闭</string>
     <string name="message_no_comment">暂无评论，快抢沙发吧。</string>

@@ -1,24 +1,20 @@
 package cn.guolf.guoblog.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.entity.ArticleItem;
 import cn.guolf.guoblog.fragments.ArticleDetailFragment;
-import cn.guolf.guoblog.lib.kits.LogKits;
 import cn.guolf.guoblog.lib.kits.PrefKit;
 import cn.guolf.guoblog.widget.FixViewPager;
 
@@ -83,7 +79,7 @@ public class ArticleDetailActivity extends ExtendBaseActivity implements Article
 
     @Override
     public void onArticleLoadFinish(ArticleItem item, boolean success) {
-        LogKits.i("onArticleLoadFinish:" + item.getArticleTitle());
+
     }
 
     @Override

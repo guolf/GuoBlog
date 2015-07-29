@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.adapter.ArticleListAdapter;
@@ -53,7 +52,7 @@ public class ArticleListItemHolderView  extends MaterialRippleLayout {
     public void showNews(ArticleItem item, boolean showImage, boolean showLarge, DisplayImageOptions optionsLarge, DisplayImageOptions optionsSmall, ArticleListAdapter.AnimateFirstDisplayListener listener) {
         LogKits.i("showNews: "+item.getArticleTitle() );
         news_title.setText(item.getArticleTitle());
-        //news_views.setText(item.get);
+        news_views.setText("" + item.getReadTimes());
         news_time.setText(item.getPublishedTime());
        // news_comment.setText(item.getComments());
         news_summary.setText(item.getRemark());

@@ -8,23 +8,23 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
 import com.loopj.android.http.SyncHttpClient;
-import cn.guolf.guoblog.MyApplication;
-import cn.guolf.guoblog.lib.Configure;
 
 import org.apache.http.Header;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.message.BasicHeader;
+
+import cn.guolf.guoblog.MyApplication;
+import cn.guolf.guoblog.lib.Configure;
 
 /**
  * Created by ywwxhz on 2014/10/17.
  */
 public class NetKit {
 
+    public static final String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
     private static NetKit instance;
     private AsyncHttpClient mClient;
-
     private SyncHttpClient mSyncHttpClient;
-    public static final String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
 
     private NetKit() {
         mClient = new AsyncHttpClient();
@@ -53,6 +53,31 @@ public class NetKit {
         return instance;
     }
 
+    // Origin 只用于post请求，Referer 用于所有请求，都表示请求来源
+    public static Header[] getAuthHeader() {
+        return new Header[]{
+                new BasicHeader("Referer", "http://www.guolingfa.cn/"),
+                new BasicHeader("Origin", "http://www.guolingfa.cn"),
+                new BasicHeader("X-Requested-With", "XMLHttpRequest")
+        };
+    }
+
+    public static boolean isWifiConnected() {
+        ConnectivityManager cm = (ConnectivityManager) MyApplication.getInstance()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkINfo = cm.getActiveNetworkInfo();
+        return networkINfo != null
+                && networkINfo.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    public static boolean isMobileConnected() {
+        ConnectivityManager cm = (ConnectivityManager) MyApplication.getInstance()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkINfo = cm.getActiveNetworkInfo();
+        return networkINfo != null
+                && networkINfo.getType() == ConnectivityManager.TYPE_MOBILE;
+    }
+
     // 获取文章列表
     public void getArticlelistByPage(int page, String type, ResponseHandlerInterface handlerInterface) {
         RequestParams params = new RequestParams();
@@ -75,51 +100,13 @@ public class NetKit {
         mClient.get(Configure.buildArticleUrl(id),handlerInterface);
     }
 
-    public void getNewslistByTopic(int page, String type, ResponseHandlerInterface handlerInterface) {
+    public void getTalkListByPage(int page, ResponseHandlerInterface responseHandlerInterface) {
+        LogKits.i("getTalkListByPage");
         RequestParams params = new RequestParams();
-        params.add("id", type);
-        params.add("page", page + "");
+        params.add("cpage", page + "");
+        params.add("pagesize", "10");
         params.add("_", System.currentTimeMillis() + "");
-        mClient.get(null, Configure.TOPIC_NEWS_LIST, getAuthHeader(), params, handlerInterface);
-    }
-
-    public void getNewsBySid(String sid, ResponseHandlerInterface handlerInterface) {
-        mClient.get(Configure.buildArticleUrl(sid), handlerInterface);
-    }
-
-    public void getNewsBySidSync(String sid, ResponseHandlerInterface handlerInterface) {
-        mSyncHttpClient.get(Configure.buildArticleUrl(sid), handlerInterface);
-    }
-
-    public void loginMobile(String username,String password,ResponseHandlerInterface handlerInterface){
-        RequestParams params = new RequestParams();
-        params.add("username",username);
-        params.add("password",password);
-        mClient.post(null,Configure.LOGIN_RUL,getAuthHeader(),params,CONTENT_TYPE,handlerInterface);
-    }
-
-    public void getCommentBySnAndSid(String sn, String sid, ResponseHandlerInterface handlerInterface) {
-        RequestParams params = new RequestParams();
-        params.add("op", "1," + sid + "," + sn);
-        mClient.post(null, Configure.COMMENT_URL, getAuthHeader(), params, CONTENT_TYPE, handlerInterface);
-    }
-
-    public void setCommentAction(String op, String sid, String tid, String csrf_token, ResponseHandlerInterface handlerInterface) {
-        RequestParams params = new RequestParams();
-        params.add("op", op);
-        params.add("sid", sid);
-        params.add("tid", tid);
-        params.add("csrf_token", csrf_token);
-        mClient.post(null, Configure.COMMENT_VIEW, getAuthHeader(), params, CONTENT_TYPE, handlerInterface);
-    }
-
-    // Origin 只用于post请求，Referer 用于所有请求，都表示请求来源
-    public static Header[] getAuthHeader() {
-        return new Header[]{
-                new BasicHeader("Referer", "http://www.guolingfa.cn/"),
-                new BasicHeader("Origin", "http://www.guolingfa.cn"),
-                new BasicHeader("X-Requested-With", "XMLHttpRequest")
-        };
+        mClient.get(null, Configure.TALK_LIST_URL, getAuthHeader(), params, responseHandlerInterface);
     }
 
     public AsyncHttpClient getClient() {
@@ -142,21 +129,5 @@ public class NetKit {
             }
         }
         return false;
-    }
-
-    public static boolean isWifiConnected() {
-        ConnectivityManager cm = (ConnectivityManager) MyApplication.getInstance()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkINfo = cm.getActiveNetworkInfo();
-        return networkINfo != null
-                && networkINfo.getType() == ConnectivityManager.TYPE_WIFI;
-    }
-
-    public static boolean isMobileConnected() {
-        ConnectivityManager cm = (ConnectivityManager) MyApplication.getInstance()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkINfo = cm.getActiveNetworkInfo();
-        return networkINfo != null
-                && networkINfo.getType() == ConnectivityManager.TYPE_MOBILE;
     }
 }

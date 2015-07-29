@@ -1,8 +1,5 @@
 package cn.guolf.guoblog.entity;
 
-import cn.guolf.guoblog.lib.database.annotation.Id;
-import cn.guolf.guoblog.lib.database.annotation.NoAutoIncrement;
-
 /**
  * Created by guolf on 7/17/15.
  */
@@ -13,6 +10,7 @@ public class ArticleItem {
     private String ArticleContent;
     private String PublishedTime;
     private String Remark;
+    private int ReadTimes;
 
     public ArticleItem() {
     }
@@ -20,6 +18,14 @@ public class ArticleItem {
     public ArticleItem(String id, String title) {
         this.ArticleId = id;
         this.ArticleTitle = title;
+    }
+
+    public int getReadTimes() {
+        return ReadTimes;
+    }
+
+    public void setReadTimes(int readTimes) {
+        ReadTimes = readTimes;
     }
 
     public String getArticleId() {
@@ -61,4 +67,5 @@ public class ArticleItem {
     public void setRemark(String remark) {
         Remark = remark;
     }
+
 }

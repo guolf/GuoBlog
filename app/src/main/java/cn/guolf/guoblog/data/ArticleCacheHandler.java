@@ -12,22 +12,14 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
-import com.loopj.android.http.TextHttpResponseHandler;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import org.apache.http.Header;
-
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
-import cn.guolf.guoblog.MyApplication;
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.entity.ArticleItem;
 import cn.guolf.guoblog.lib.kits.FileCacheKit;
-import cn.guolf.guoblog.lib.kits.LogKits;
-import cn.guolf.guoblog.lib.kits.NetKit;
 import cn.guolf.guoblog.lib.kits.PrefKit;
 
 /**
@@ -176,24 +168,24 @@ public class ArticleCacheHandler extends Handler {
 //                            img.recycle();
 //                        }
                     }
-                    NetKit.getInstance().getNewsBySidSync(item.getArticleId() + "", new TextHttpResponseHandler() {
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            failedCount++;
-                            LogKits.e(item.getArticleTitle() + " 缓存失败");
-                        }
-
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                            successCount++;
-                            //NewsDetailProvider.handleResponceString(item, responseString,true,cacheImage);
-                        }
-
-                        @Override
-                        public void onProgress(int bytesWritten, int totalSize) {
-
-                        }
-                    });
+//                    NetKit.getInstance().getNewsBySidSync(item.getArticleId() + "", new TextHttpResponseHandler() {
+//                        @Override
+//                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                            failedCount++;
+//                            LogKits.e(item.getArticleTitle() + " 缓存失败");
+//                        }
+//
+//                        @Override
+//                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
+//                            successCount++;
+//                            //NewsDetailProvider.handleResponceString(item, responseString,true,cacheImage);
+//                        }
+//
+//                        @Override
+//                        public void onProgress(int bytesWritten, int totalSize) {
+//
+//                        }
+//                    });
                 }
             }
             post(new Runnable() {
