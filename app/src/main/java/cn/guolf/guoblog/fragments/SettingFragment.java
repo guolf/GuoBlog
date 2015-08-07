@@ -25,6 +25,14 @@ import cn.guolf.guoblog.lib.kits.Toolkit;
  */
 public class SettingFragment extends PreferenceFragment {
 
+    Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            // TODO 列表图片显示设置待完善
+            MyApplication.getInstance().setListImageShowStatusChange(true);
+            return true;
+        }
+    };
     private Preference preference;
     private boolean running = false;
 
@@ -90,21 +98,22 @@ public class SettingFragment extends PreferenceFragment {
                 return false;
             }
         });
+
+        Preference about = findPreference(getString(R.string.pref_about_key));
+        about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment()).commit();
+                return false;
+            }
+        });
+
         // 列表显示大图
         findPreference(getString(R.string.pref_show_large_image_key)).setOnPreferenceChangeListener(listener);
 
         // 新闻列表显示图片
         findPreference(getString(R.string.pref_show_list_news_image_key)).setOnPreferenceChangeListener(listener);
     }
-
-    Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            // TODO 列表图片显示设置待完善
-            MyApplication.getInstance().setListImageShowStatusChange(true);
-            return true;
-        }
-    };
 
     private String getFileSize() {
         long size = 0;

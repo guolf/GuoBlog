@@ -100,6 +100,10 @@ public class NetKit {
         mClient.get(Configure.buildArticleUrl(id),handlerInterface);
     }
 
+    public void getArticleDetailByUrlSync(String id, ResponseHandlerInterface handlerInterface) {
+        mSyncHttpClient.get(Configure.buildArticleUrl(id), handlerInterface);
+    }
+
     public void getTalkListByPage(int page, ResponseHandlerInterface responseHandlerInterface) {
         LogKits.i("getTalkListByPage");
         RequestParams params = new RequestParams();

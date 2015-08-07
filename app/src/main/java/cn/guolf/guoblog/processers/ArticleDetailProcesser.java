@@ -55,6 +55,7 @@ import cn.guolf.guoblog.lib.Configure;
 import cn.guolf.guoblog.lib.CroutonStyle;
 import cn.guolf.guoblog.lib.ThemeManger;
 import cn.guolf.guoblog.lib.database.exception.DbException;
+import cn.guolf.guoblog.lib.kits.FileCacheKit;
 import cn.guolf.guoblog.lib.kits.NetKit;
 import cn.guolf.guoblog.lib.kits.PrefKit;
 import cn.guolf.guoblog.lib.kits.Toolkit;
@@ -87,7 +88,7 @@ public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDet
     private String light = "#introduce{background-color:#F1F1F1;color: #444;}";
     private Handler myHandler;
     private WebSettings settings;
-    private boolean shouldLoadCache;
+    private boolean shouldLoadCache = true;
 
     public ArticleDetailProcesser(ArticleDetailProvider provider){
         super(provider);
@@ -108,18 +109,14 @@ public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDet
 
     @Override
     public void loadData(boolean startup) {
-        makeRequest();
-//        String title = mNewsItem.getArticleTitle();
-//        shouldLoadCache = !title.contains("直播")||title.contains("已完结");
-//        ArticleItem mNews = mNewsItem.getSN() == null ? FileCacheKit.getInstance().getAsObject(mNewsItem.getSid() + "", NewsItem.class) : mNewsItem;
-//        if (mNews == null||!shouldLoadCache) {
-//            makeRequest();
-//        } else {
-//            hascontent = true;
-//            mNews.setTitle(title);
-//            mNewsItem = mNews;
-//            blindData(mNews);
-//        }
+        ArticleItem mNews = FileCacheKit.getInstance().getAsObject(mNewsItem.getArticleId(), ArticleItem.class);
+        if (mNews == null) {
+            makeRequest();
+        } else {
+            hascontent = true;
+            mNewsItem = mNews;
+            blindData(mNews);
+        }
     }
 
     @Override

@@ -12,12 +12,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.regex.Matcher;
-
 import cn.guolf.guoblog.MyApplication;
 import cn.guolf.guoblog.data.BaseDataProvider;
 import cn.guolf.guoblog.entity.ArticleItem;
-import cn.guolf.guoblog.lib.Configure;
 import cn.guolf.guoblog.lib.kits.FileCacheKit;
 import cn.guolf.guoblog.lib.kits.LogKits;
 import cn.guolf.guoblog.lib.kits.NetKit;
@@ -59,15 +56,6 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
         super(activity);
     }
 
-    @Override
-    public void loadData(boolean startup) {
-
-    }
-
-    public void loadArticleAsyc(String sid){
-        NetKit.getInstance().getArticleDetailByUrl(sid, handler);
-    }
-
     public static boolean handleResponceString(ArticleItem item,String resp,boolean shouldCache){
         return handleResponceString(item, resp,shouldCache,false);
     }
@@ -91,11 +79,20 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
         item.setArticleContent(content.html());
         if(item.getArticleContent()!=null&&item.getArticleContent().length()>0){
             if(shouldCache) {
-                FileCacheKit.getInstance().put(item.getArticleId() + "", Toolkit.getGson().toJson(item));
+                FileCacheKit.getInstance().put(item.getArticleId(), Toolkit.getGson().toJson(item));
             }
             return true;
         }else{
             return false;
         }
+    }
+
+    @Override
+    public void loadData(boolean startup) {
+
+    }
+
+    public void loadArticleAsyc(String sid) {
+        NetKit.getInstance().getArticleDetailByUrl(sid, handler);
     }
 }

@@ -2,7 +2,6 @@ package cn.guolf.guoblog.data.impl;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -43,51 +42,20 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
             List<ArticleItem> dataSet = getAdapter().getDataSet();
             int size = 0;
             boolean find = false;
-//            for (int i = 0; i < itemList.size(); i++) {
-//                ArticleItem item = itemList.get(i);
-//                if (itemList.get(i).getCounter() != null && item.getComments() != null) {
-//                    int num = Integer.parseInt(item.getCounter());
-//                    if (num > 9999) {
-//                        item.setCounter("9999+");
-//                    }
-//                    num = Integer.parseInt(item.getComments());
-//                    if (num > 999) {
-//                        item.setComments("999+");
-//                    }
-//                } else {
-//                    item.setCounter("0");
-//                    item.setComments("0");
-//                }
-//                StringBuilder sb = new StringBuilder(Html.fromHtml(item.getHometext().replaceAll("<.*?>|[\\r|\\n]", "")));
-//                if (sb.length() > 140) {
-//                    item.setSummary(sb.replace(140, sb.length(), "...").toString());
-//                } else {
-//                    item.setSummary(sb.toString());
-//                }
-//                if (item.getThumb().contains("thumb")) {
-//                    item.setLargeImage(item.getThumb().replaceAll("(\\.\\w{3,4})?_100x100|thumb/mini/", ""));
-//                }
-//                if (!find && item.getArticleId() != topSid) {
-//                    size++;
-//                } else if (!find) {
-//                    find = true;
-//                }
-//            }
             if (!find) {
                 size++;
             }
             dataSet.addAll(itemList);
-//            if (!hasCached || result.getPage() == 1) {
-//                hasCached = true;
-//                getAdapter().setDataSet(itemList);
-//                if(itemList.size()>2) {
-//                    topSid = itemList.get(1).getArticleId();
-//                }
-//                showToastAndCache(itemList, size - 1);
-//            } else {
-//                dataSet.addAll(itemList);
-//            }
-//            current = result.getPage();
+            if (!hasCached) {
+                hasCached = true;
+                getAdapter().setDataSet(itemList);
+                if (itemList.size() > 2) {
+                    topSid = itemList.get(1).getArticleId();
+                }
+                showToastAndCache(itemList, size - 1);
+            } else {
+                dataSet.addAll(itemList);
+            }
         }
 
         @Override

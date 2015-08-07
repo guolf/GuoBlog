@@ -12,18 +12,26 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 import cn.guolf.guoblog.R;
+import cn.guolf.guoblog.data.impl.ArticleDetailProvider;
 import cn.guolf.guoblog.entity.ArticleItem;
 import cn.guolf.guoblog.lib.kits.FileCacheKit;
+import cn.guolf.guoblog.lib.kits.LogKits;
+import cn.guolf.guoblog.lib.kits.NetKit;
 import cn.guolf.guoblog.lib.kits.PrefKit;
 
 /**
  * Created by guolf on 7/17/15.
+ * 文章缓存Handler
  */
 public class ArticleCacheHandler extends Handler {
 
@@ -90,9 +98,9 @@ public class ArticleCacheHandler extends Handler {
         if (!start) {
             this.start = true;
             builder.setProgress(0, 0, true);
-            builder.setContentTitle("正在缓存新闻中");
+            builder.setContentTitle("正在缓存文章中");
             builder.setContentText("请稍候");
-            builder.setTicker("正在离线缓存新闻");
+            builder.setTicker("正在离线缓存文章");
             builder.setSmallIcon(R.mipmap.ic_logo);
             builder.setLargeIcon(largeLogo);
             builder.setOngoing(true);
@@ -161,31 +169,25 @@ public class ArticleCacheHandler extends Handler {
                         sendMessage(msg);
                     }
                 });
-                if (FileCacheKit.getInstance().getAsObject(item.getArticleId() + "", ArticleItem.class) == null) {
-                    if(PrefKit.getBoolean(context.get(),R.string.pref_show_list_news_image_key,true)) {
-//                        Bitmap img = ImageLoader.getInstance().loadImageSync(item.getThumb(), MyApplication.getDefaultDisplayOption());
-//                        if (img != null) {
-//                            img.recycle();
-//                        }
-                    }
-//                    NetKit.getInstance().getNewsBySidSync(item.getArticleId() + "", new TextHttpResponseHandler() {
-//                        @Override
-//                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                            failedCount++;
-//                            LogKits.e(item.getArticleTitle() + " 缓存失败");
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
-//                            successCount++;
-//                            //NewsDetailProvider.handleResponceString(item, responseString,true,cacheImage);
-//                        }
-//
-//                        @Override
-//                        public void onProgress(int bytesWritten, int totalSize) {
-//
-//                        }
-//                    });
+                if (FileCacheKit.getInstance().getAsObject(item.getArticleId(), ArticleItem.class) == null) {
+                    NetKit.getInstance().getArticleDetailByUrlSync(item.getArticleId(), new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            failedCount++;
+                            LogKits.d("", throwable.getCause());
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                            successCount++;
+                            ArticleDetailProvider.handleResponceString(item, responseString, true, cacheImage);
+                        }
+
+                        @Override
+                        public void onProgress(int bytesWritten, int totalSize) {
+
+                        }
+                    });
                 }
             }
             post(new Runnable() {

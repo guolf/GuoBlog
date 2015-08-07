@@ -19,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import cn.guolf.guoblog.lib.kits.LogKits;
+
 /**
  * 自定义的 异常处理类 , 实现了 UncaughtExceptionHandler接口
  *
@@ -95,6 +97,7 @@ public class MyCrashHandler implements UncaughtExceptionHandler {
                 os.close();
             }
         } catch (Exception ignored) {
+            LogKits.i("异常信息保存出错");
         }
         return false;
     }

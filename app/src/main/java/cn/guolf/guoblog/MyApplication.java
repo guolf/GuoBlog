@@ -12,7 +12,6 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import java.io.File;
 
-import cn.guolf.guoblog.lib.Emoticons;
 import cn.guolf.guoblog.lib.MyCrashHandler;
 import cn.guolf.guoblog.lib.database.DbUtils;
 import cn.guolf.guoblog.lib.kits.FileCacheKit;
@@ -23,21 +22,27 @@ import cn.guolf.guoblog.lib.kits.PrefKit;
  */
 public class MyApplication extends Application {
 
+    public static DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
     private static MyApplication instance;
-
     private Boolean debug;
     private boolean listImageShowStatusChange;
+    private DbUtils mDbUtils;
+
+    public static MyApplication getInstance() {
+        return instance;
+    }
+
+    public static DisplayImageOptions getDefaultDisplayOption() {
+        return options;
+    }
 
     public DbUtils getDbUtils() {
         return mDbUtils;
     }
 
-    private DbUtils mDbUtils;
-
-    public static DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
-
     @Override
     public void onCreate() {
+        super.onCreate();
         instance = this;
         debug = PrefKit.getBoolean(this, R.string.pref_debug_key, false);
         FileCacheKit.getInstance(this);
@@ -66,10 +71,6 @@ public class MyApplication extends Application {
         ImageLoader.getInstance().init(config);
     }
 
-    public static MyApplication getInstance() {
-        return instance;
-    }
-
     public boolean getDebug() {
         return debug;
     }
@@ -85,10 +86,6 @@ public class MyApplication extends Application {
 
     public File getInternalCacheDir() {
         return super.getCacheDir();
-    }
-
-    public static DisplayImageOptions getDefaultDisplayOption() {
-        return options;
     }
 
     public boolean isListImageShowStatusChange() {
