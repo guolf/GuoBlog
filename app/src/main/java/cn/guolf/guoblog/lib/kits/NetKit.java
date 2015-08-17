@@ -12,6 +12,9 @@ import com.loopj.android.http.SyncHttpClient;
 import org.apache.http.Header;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.message.BasicHeader;
+import org.jsoup.helper.StringUtil;
+
+import java.util.List;
 
 import cn.guolf.guoblog.MyApplication;
 import cn.guolf.guoblog.lib.Configure;
@@ -86,6 +89,14 @@ public class NetKit {
         params.add("pagesize","10");
         params.add("_", System.currentTimeMillis() + "");
         mClient.get(null, Configure.ARTICLE_LIST_URL, getAuthHeader(), params, handlerInterface);
+    }
+
+    /**
+     * 获取文章评论数
+     */
+    public void getArticleCommentsCountByIds(List<String> ids, ResponseHandlerInterface handlerInterface) {
+
+        mClient.get(null, String.format(Configure.ARTICLE_LIST_URL, StringUtil.join(ids, ",")), getAuthHeader(), null, handlerInterface);
     }
 
     // 获取文章详情

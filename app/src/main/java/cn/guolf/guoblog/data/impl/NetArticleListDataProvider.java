@@ -31,6 +31,7 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
 
     private String topSid;
     private int current;
+    private List<String> ids = new ArrayList<>();
 
     private ResponseHandlerInterface newsPage = new BaseHttpResponseHandler<ArticleListObject>(
             new TypeToken<ResponseObject<ArticleListObject>>() {
@@ -45,7 +46,7 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
             if (!find) {
                 size++;
             }
-            dataSet.addAll(itemList);
+
             if (!hasCached) {
                 hasCached = true;
                 getAdapter().setDataSet(itemList);
@@ -55,6 +56,9 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
                 showToastAndCache(itemList, size - 1);
             } else {
                 dataSet.addAll(itemList);
+                for (ArticleItem i : itemList) {
+                    ids.add(i.getArticleId());
+                }
             }
         }
 

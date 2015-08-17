@@ -12,7 +12,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by ywwxhz on 2014/10/17.
+ * 文件缓存
  */
 public class FileCacheKit {
     private static final int MESSAGE_FINISH = 0x01;
@@ -149,7 +149,28 @@ public class FileCacheKit {
     }
 
     public interface FileCacheListener {
-        public void onFinish(String obj);
+        void onFinish(String obj);
+    }
+
+    private static class FileCacheHandler extends Handler {
+        private WeakReference<FileCacheListener> listener;
+
+        private FileCacheHandler(FileCacheListener listener) {
+            super(Looper.getMainLooper());
+            this.listener = new WeakReference<>(listener);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_FINISH:
+                    if (listener != null) {
+                        listener.get().onFinish((String) msg.obj);
+                    }
+                    break;
+            }
+            super.handleMessage(msg);
+        }
     }
 
     private class FileCacheSaveThread extends Thread {
@@ -194,27 +215,6 @@ public class FileCacheKit {
                 msg.obj = getAsString(key);
                 handler.sendMessage(msg);
             }
-        }
-    }
-
-    private static class FileCacheHandler extends Handler {
-        private WeakReference<FileCacheListener> listener;
-
-        private FileCacheHandler(FileCacheListener listener) {
-            super(Looper.getMainLooper());
-            this.listener =  new WeakReference<>(listener);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_FINISH:
-                    if (listener != null) {
-                        listener.get().onFinish((String) msg.obj);
-                    }
-                    break;
-            }
-            super.handleMessage(msg);
         }
     }
 
