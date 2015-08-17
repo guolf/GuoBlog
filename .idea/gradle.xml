@@ -9,17 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Crouton" />
-            <option value="$PROJECT_DIR$/FilterMenu" />
-            <option value="$PROJECT_DIR$/FloatingActionButton" />
-            <option value="$PROJECT_DIR$/MaterialRipple" />
-            <option value="$PROJECT_DIR$/SubSamplingScaleImageView" />
-            <option value="$PROJECT_DIR$/SuperSaiyanScrollView" />
-            <option value="$PROJECT_DIR$/SwipeBackLayout" />
             <option value="$PROJECT_DIR$/android-support-v4-preferencefragment" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/discreteSeekBar" />
-            <option value="$PROJECT_DIR$/materialish-progress" />
           </set>
         </option>
       </GradleProjectSettings>

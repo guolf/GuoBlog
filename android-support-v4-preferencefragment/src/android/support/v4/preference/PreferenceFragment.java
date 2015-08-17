@@ -42,18 +42,36 @@ public abstract class PreferenceFragment extends Fragment implements
 		PreferenceManagerCompat.OnPreferenceTreeClickListener {
     
 	private static final String PREFERENCES_TAG = "android:preferences";
-
-    private PreferenceManager mPreferenceManager;
-    private ListView mList;
-    private boolean mHavePrefs;
-    private boolean mInitDone;
-
     /**
      * The starting request code given out to preference framework.
      */
     private static final int FIRST_REQUEST_CODE = 100;
-
     private static final int MSG_BIND_PREFERENCES = 1;
+    private PreferenceManager mPreferenceManager;
+    private ListView mList;
+    final private Runnable mRequestFocus = new Runnable() {
+        public void run() {
+            mList.focusableViewAvailable(mList);
+        }
+    };
+    private boolean mHavePrefs;
+    private boolean mInitDone;
+    private OnKeyListener mListOnKeyListener = new OnKeyListener() {
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            Object selectedItem = mList.getSelectedItem();
+            if (selectedItem instanceof Preference) {
+                @SuppressWarnings("unused")
+                View selectedView = mList.getSelectedView();
+                //return ((Preference)selectedItem).onKey(
+                //        selectedView, keyCode, event);
+                return false;
+            }
+            return false;
+        }
+
+    };
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -65,27 +83,6 @@ public abstract class PreferenceFragment extends Fragment implements
             }
         }
     };
-
-    final private Runnable mRequestFocus = new Runnable() {
-        public void run() {
-            mList.focusableViewAvailable(mList);
-        }
-    };
-
-    /**
-     * Interface that PreferenceFragment's containing activity should
-     * implement to be able to process preference items that wish to
-     * switch to a new fragment.
-     */
-    public interface OnPreferenceStartFragmentCallback {
-        /**
-         * Called when the user has clicked on a Preference that has
-         * a fragment class name associated with it.  The implementation
-         * to should instantiate and switch to an instance of the given
-         * fragment.
-         */
-        boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref);
-    }
 	
     @Override
 	public void onCreate(Bundle paramBundle) {
@@ -177,6 +174,16 @@ public abstract class PreferenceFragment extends Fragment implements
     }
     
     /**
+     * Gets the root of the preference hierarchy that this fragment is showing.
+     *
+     * @return The {@link PreferenceScreen} that is the root of the preference
+     *         hierarchy.
+     */
+    public PreferenceScreen getPreferenceScreen() {
+        return PreferenceManagerCompat.getPreferenceScreen(mPreferenceManager);
+    }
+    
+    /**
      * Sets the root of the preference hierarchy that this fragment is showing.
      *
      * @param preferenceScreen The root {@link PreferenceScreen} of the preference hierarchy.
@@ -188,16 +195,6 @@ public abstract class PreferenceFragment extends Fragment implements
                 postBindPreferences();
             }
         }
-    }
-    
-    /**
-     * Gets the root of the preference hierarchy that this fragment is showing.
-     *
-     * @return The {@link PreferenceScreen} that is the root of the preference
-     *         hierarchy.
-     */
-    public PreferenceScreen getPreferenceScreen() {
-        return PreferenceManagerCompat.getPreferenceScreen(mPreferenceManager);
     }
     
     /**
@@ -328,22 +325,20 @@ public abstract class PreferenceFragment extends Fragment implements
         mHandler.post(mRequestFocus);
     }
 
-    private OnKeyListener mListOnKeyListener = new OnKeyListener() {
+    /**
+     * Interface that PreferenceFragment's containing activity should
+     * implement to be able to process preference items that wish to
+     * switch to a new fragment.
+     */
+    public interface OnPreferenceStartFragmentCallback {
+        /**
+         * Called when the user has clicked on a Preference that has
+         * a fragment class name associated with it.  The implementation
+         * to should instantiate and switch to an instance of the given
+         * fragment.
+         */
+        boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref);
+    }
 
-        @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            Object selectedItem = mList.getSelectedItem();
-            if (selectedItem instanceof Preference) {
-                @SuppressWarnings("unused")
-				View selectedView = mList.getSelectedView();
-                //return ((Preference)selectedItem).onKey(
-                //        selectedView, keyCode, event);
-                return false;
-            }
-            return false;
-        }
-
-    };
-	
 
 }

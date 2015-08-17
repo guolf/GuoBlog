@@ -7,9 +7,9 @@
         android:id="@+id/image_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
         android:layout_gravity="bottom"
         android:padding="30dp"
+        android:textColor="@android:color/white"
         android:textSize="20sp" />
 
     <com.linroid.filtermenu.library.FilterMenuLayout
@@ -17,10 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="8dp"
-        app:expandedRadius="96dp"
-        app:collapsedRadius="24dp"
-        app:centerBottom="48dp"
-        app:centerRight="48dp"
-        app:primaryColor="?colorPrimary"
-        app:primaryDarkColor="?colorPrimaryDark"/>
+        app:fm_centerBottom="48dp"
+        app:fm_centerRight="48dp"
+        app:fm_collapsedRadius="24dp"
+        app:fm_expandedRadius="96dp"
+        app:fm_primaryColor="?colorPrimary"
+        app:fm_primaryDarkColor="?colorPrimaryDark" />
 </merge>

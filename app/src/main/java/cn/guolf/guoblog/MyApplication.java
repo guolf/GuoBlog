@@ -9,6 +9,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
 
@@ -16,6 +17,7 @@ import cn.guolf.guoblog.lib.MyCrashHandler;
 import cn.guolf.guoblog.lib.database.DbUtils;
 import cn.guolf.guoblog.lib.kits.FileCacheKit;
 import cn.guolf.guoblog.lib.kits.PrefKit;
+
 
 /**
  * Created by guolf on 7/17/15.
@@ -50,6 +52,8 @@ public class MyApplication extends Application {
         initImageLoader(getApplicationContext());
         //Emoticons.init(this);
         mDbUtils = DbUtils.create(this);
+        CrashReport.initCrashReport(this, "1103444121", false);
+
     }
 
     public void initImageLoader(Context context) {

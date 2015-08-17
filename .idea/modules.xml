@@ -2,18 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Crouton/Crouton.iml" filepath="$PROJECT_DIR$/Crouton/Crouton.iml" />
-      <module fileurl="file://$PROJECT_DIR$/FilterMenu/FilterMenu.iml" filepath="$PROJECT_DIR$/FilterMenu/FilterMenu.iml" />
-      <module fileurl="file://$PROJECT_DIR$/FloatingActionButton/FloatingActionButton.iml" filepath="$PROJECT_DIR$/FloatingActionButton/FloatingActionButton.iml" />
       <module fileurl="file://$PROJECT_DIR$/GuoBlog.iml" filepath="$PROJECT_DIR$/GuoBlog.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MaterialRipple/MaterialRipple.iml" filepath="$PROJECT_DIR$/MaterialRipple/MaterialRipple.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SubSamplingScaleImageView/SubSamplingScaleImageView.iml" filepath="$PROJECT_DIR$/SubSamplingScaleImageView/SubSamplingScaleImageView.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SuperSaiyanScrollView/SuperSaiyanScrollView.iml" filepath="$PROJECT_DIR$/SuperSaiyanScrollView/SuperSaiyanScrollView.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SwipeBackLayout/SwipeBackLayout.iml" filepath="$PROJECT_DIR$/SwipeBackLayout/SwipeBackLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-support-v4-preferencefragment/android-support-v4-preferencefragment.iml" filepath="$PROJECT_DIR$/android-support-v4-preferencefragment/android-support-v4-preferencefragment.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/discreteSeekBar/discreteSeekBar.iml" filepath="$PROJECT_DIR$/discreteSeekBar/discreteSeekBar.iml" />
-      <module fileurl="file://$PROJECT_DIR$/materialish-progress/materialish-progress.iml" filepath="$PROJECT_DIR$/materialish-progress/materialish-progress.iml" />
     </modules>
   </component>
 </project>
