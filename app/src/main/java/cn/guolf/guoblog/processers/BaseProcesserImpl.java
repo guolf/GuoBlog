@@ -3,7 +3,7 @@ package cn.guolf.guoblog.processers;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +18,7 @@ import cn.guolf.guoblog.data.DataProviderCallback;
 public abstract class BaseProcesserImpl<E,DataProvider extends BaseDataProvider<E>>
         implements BaseProcesser<E,DataProvider>, DataProviderCallback<E> {
 
-    protected ActionBarActivity mActivity;
+    protected AppCompatActivity mActivity;
     protected DataProvider provider;
     protected int colorPrimary;
     protected int colorPrimaryDark;
@@ -27,17 +27,18 @@ public abstract class BaseProcesserImpl<E,DataProvider extends BaseDataProvider<
     protected int colorAccent;
     protected onOptionMenuSelect menuCallBack;
 
-    public interface onOptionMenuSelect{
-        boolean onMenuSelect(MenuItem item);
-    }
-
     public BaseProcesserImpl(DataProvider provider) {
         this.provider = provider;
         provider.setCallback(this);
     }
 
     @Override
-    public void setActivity(ActionBarActivity activity) {
+    public AppCompatActivity getActivity() {
+        return mActivity;
+    }
+
+    @Override
+    public void setActivity(AppCompatActivity activity) {
         this.mActivity = activity;
         this.provider.setActivity(activity);
         TypedArray array = activity.obtainStyledAttributes(new int[]{R.attr.colorPrimary,
@@ -50,11 +51,6 @@ public abstract class BaseProcesserImpl<E,DataProvider extends BaseDataProvider<
         windowBackground = array.getColor(3, Color.WHITE);
         colorAccent = array.getColor(4,activity.getResources().getColor(R.color.toolbarColor));
         array.recycle();
-    }
-
-    @Override
-    public ActionBarActivity getActivity() {
-        return mActivity;
     }
 
     @Override
@@ -94,5 +90,9 @@ public abstract class BaseProcesserImpl<E,DataProvider extends BaseDataProvider<
 
     public void setMenuCallBack(onOptionMenuSelect menuCallBack) {
         this.menuCallBack = menuCallBack;
+    }
+
+    public interface onOptionMenuSelect {
+        boolean onMenuSelect(MenuItem item);
     }
 }

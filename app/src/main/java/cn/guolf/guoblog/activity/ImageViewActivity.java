@@ -1,6 +1,5 @@
 package cn.guolf.guoblog.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,11 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -37,15 +37,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import cn.guolf.guoblog.MyApplication;
+import cn.guolf.guoblog.BuildConfig;
 import cn.guolf.guoblog.R;
-import cn.guolf.guoblog.lib.ThemeManger;
 import cn.guolf.guoblog.lib.kits.FileKit;
 import cn.guolf.guoblog.lib.kits.PrefKit;
 import cn.guolf.guoblog.lib.kits.Toolkit;
 import cn.guolf.guoblog.lib.kits.UIKit;
 import cn.guolf.guoblog.widget.FixViewPager;
-import cn.guolf.guoblog.widget.TranslucentStatus.TranslucentStatusHelper;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
@@ -54,7 +52,7 @@ import pl.droidsonroids.gif.GifImageView;
  * 图片预览
  * Created by guolf on 7/17/15.
  */
-public class ImageViewActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
+public class ImageViewActivity extends ExtendBaseActivity implements ViewPager.OnPageChangeListener, View.OnTouchListener {
     public static final String IMAGE_URLS = "image_urls";
     public static final String CURRENT_POS = "current";
     private static final String imageNumFormate = " %d / %d ";
@@ -66,15 +64,11 @@ public class ImageViewActivity extends FragmentActivity implements ViewPager.OnP
     private List<ImageItem> imageItems;
     private int screenHeight;
     private int screenWidth;
-    private boolean debug;
     private boolean preload_image;
 
     public void onCreate(Bundle savedInstanceState) {
-        ThemeManger.onActivityCreateSetTheme(this);
-        getWindow().setBackgroundDrawableResource(R.color.gray_80);
         super.onCreate(savedInstanceState);
         if (getIntent().getExtras().containsKey(IMAGE_URLS) && getIntent().getExtras().containsKey(CURRENT_POS)) {
-            debug = MyApplication.getInstance().getDebug();
             preload_image = PrefKit.getBoolean(this, R.string.pref_preload_image_key, true);
             screenHeight = getResources().getDisplayMetrics().heightPixels;
             screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -84,9 +78,6 @@ public class ImageViewActivity extends FragmentActivity implements ViewPager.OnP
                 this.finish();
                 return;
             }
-            TranslucentStatusHelper.from(this)
-                    .setTranslucentProxy(TranslucentStatusHelper.TranslucentProxy.STATUS_BAR)
-                    .builder();
             setContentView(R.layout.activity_imageview);
             initView();
             loadAndShowPos(pos);
@@ -105,6 +96,7 @@ public class ImageViewActivity extends FragmentActivity implements ViewPager.OnP
                 .considerExifParams(true).build();
         views = new ArrayList<>(imageSrcs.length);
         imageItems = new ArrayList<>(imageSrcs.length);
+        setTitle("查看图片");
         int width = UIKit.dip2px(this, 4);
         int progressWidth = UIKit.dip2px(this, 80);
         for (String imageSrc : imageSrcs) {
@@ -114,7 +106,7 @@ public class ImageViewActivity extends FragmentActivity implements ViewPager.OnP
             FrameLayout.LayoutParams pvparams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             if (!imageSrc.endsWith(".gif")) {
                 imageView = new SubsamplingScaleImageView(this);
-                ((SubsamplingScaleImageView) imageView).setDebug(debug);
+                ((SubsamplingScaleImageView) imageView).setDebug(BuildConfig.DEBUG);
                 ((SubsamplingScaleImageView) imageView).setMinimumDpi(50);
             } else {
                 imageView = new GifImageView(this);
@@ -220,13 +212,19 @@ public class ImageViewActivity extends FragmentActivity implements ViewPager.OnP
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
+            default:
+                return true;
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -253,6 +251,24 @@ public class ImageViewActivity extends FragmentActivity implements ViewPager.OnP
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    private void loadAndShowPos(int pos) {
+        imageItems.get(pos).displayImage(true);
+        if (preload_image) {
+            if (pos > 0) {
+                imageItems.get(pos - 1).displayImage(false);
+            }
+            if (pos < imageItems.size() - 1) {
+                imageItems.get(pos + 1).displayImage(false);
+            }
+        }
+        imagenum.setText(String.format(Locale.CHINA, imageNumFormate, pos + 1, imageSrcs.length));
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
     }
 
     class ImageItem {
@@ -337,19 +353,6 @@ public class ImageViewActivity extends FragmentActivity implements ViewPager.OnP
         }
     }
 
-    private void loadAndShowPos(int pos) {
-        imageItems.get(pos).displayImage(true);
-        if (preload_image) {
-            if (pos > 0) {
-                imageItems.get(pos - 1).displayImage(false);
-            }
-            if (pos < imageItems.size() - 1) {
-                imageItems.get(pos + 1).displayImage(false);
-            }
-        }
-        imagenum.setText(String.format(Locale.CHINA, imageNumFormate, pos + 1, imageSrcs.length));
-    }
-
     private class MyPageTransformer implements ViewPager.PageTransformer {
         @Override
         public void transformPage(View view, float position) {
@@ -372,6 +375,5 @@ public class ImageViewActivity extends FragmentActivity implements ViewPager.OnP
                 view.setAlpha(0);
             }
         }
-
     }
 }

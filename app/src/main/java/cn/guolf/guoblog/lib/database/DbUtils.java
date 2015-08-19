@@ -28,7 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 import cn.guolf.guoblog.lib.database.exception.DbException;
 import cn.guolf.guoblog.lib.database.sqlite.CursorUtils;
 import cn.guolf.guoblog.lib.database.sqlite.DbModelSelector;
@@ -43,6 +42,9 @@ import cn.guolf.guoblog.lib.database.table.TableUtils;
 import cn.guolf.guoblog.lib.kits.IOUtils;
 import cn.guolf.guoblog.lib.kits.LogKits;
 
+/**
+ * https://github.com/wyouflf/xUtils/
+ */
 public class DbUtils {
 
     //*************************************** create instance ****************************************************
@@ -51,11 +53,14 @@ public class DbUtils {
      * key: dbName
      */
     private static HashMap<String, DbUtils> daoMap = new HashMap<String, DbUtils>();
-
+    /////////////////////// temp cache ////////////////////////////////////////////////////////////////
+    private final FindTempCache findTempCache = new FindTempCache();
     private SQLiteDatabase database;
     private DaoConfig daoConfig;
     private boolean debug = false;
     private boolean allowTransaction = false;
+    private Lock writeLock = new ReentrantLock();
+    private volatile boolean writeLocked = false;
 
     private DbUtils(DaoConfig config) {
         if (config == null) {
@@ -64,7 +69,6 @@ public class DbUtils {
         this.database = createDatabase(config);
         this.daoConfig = config;
     }
-
 
     private synchronized static DbUtils getInstance(DaoConfig daoConfig) {
         DbUtils dao = daoMap.get(daoConfig.getDbName());
@@ -142,6 +146,8 @@ public class DbUtils {
         return this;
     }
 
+    //*********************************************** operations ********************************************************
+
     public DbUtils configAllowTransaction(boolean allowTransaction) {
         this.allowTransaction = allowTransaction;
         return this;
@@ -154,8 +160,6 @@ public class DbUtils {
     public DaoConfig getDaoConfig() {
         return daoConfig;
     }
-
-    //*********************************************** operations ********************************************************
 
     public void saveOrUpdate(Object entity) throws DbException {
         try {
@@ -410,7 +414,7 @@ public class DbUtils {
         if (cursor != null) {
             try {
                 if (cursor.moveToNext()) {
-                    T entity = (T) CursorUtils.getEntity(this, cursor, entityType, seq);
+                    T entity = CursorUtils.getEntity(this, cursor, entityType, seq);
                     findTempCache.put(sql, entity);
                     return entity;
                 }
@@ -543,6 +547,8 @@ public class DbUtils {
         return dbModelList;
     }
 
+    //******************************************** config ******************************************************
+
     public List<DbModel> findDbModelAll(DbModelSelector selector) throws DbException {
         if (!tableIsExist(selector.getEntityType())) return null;
 
@@ -576,68 +582,6 @@ public class DbUtils {
         return count(Selector.from(entityType));
     }
 
-    //******************************************** config ******************************************************
-
-    public static class DaoConfig {
-        private Context context;
-        private String dbName = "guolf.db"; // default db name
-        private int dbVersion = 1;
-        private DbUpgradeListener dbUpgradeListener;
-
-        private String dbDir;
-
-        public DaoConfig(Context context) {
-            this.context = context.getApplicationContext();
-        }
-
-        public Context getContext() {
-            return context;
-        }
-
-        public String getDbName() {
-            return dbName;
-        }
-
-        public void setDbName(String dbName) {
-            if (!TextUtils.isEmpty(dbName)) {
-                this.dbName = dbName;
-            }
-        }
-
-        public int getDbVersion() {
-            return dbVersion;
-        }
-
-        public void setDbVersion(int dbVersion) {
-            this.dbVersion = dbVersion;
-        }
-
-        public DbUpgradeListener getDbUpgradeListener() {
-            return dbUpgradeListener;
-        }
-
-        public void setDbUpgradeListener(DbUpgradeListener dbUpgradeListener) {
-            this.dbUpgradeListener = dbUpgradeListener;
-        }
-
-        public String getDbDir() {
-            return dbDir;
-        }
-
-        /**
-         * set database dir
-         *
-         * @param dbDir If dbDir is null or empty, use the app default db dir.
-         */
-        public void setDbDir(String dbDir) {
-            this.dbDir = dbDir;
-        }
-    }
-
-    public interface DbUpgradeListener {
-        public void onUpgrade(DbUtils db, int oldVersion, int newVersion);
-    }
-
     private SQLiteDatabase createDatabase(DaoConfig config) {
         SQLiteDatabase result = null;
 
@@ -669,6 +613,8 @@ public class DbUtils {
         }
     }
 
+    //************************************************ tools ***********************************
+
     private boolean saveBindingIdWithoutTransaction(Object entity) throws DbException {
         Class<?> entityType = entity.getClass();
         Table table = Table.get(this, entityType);
@@ -686,8 +632,6 @@ public class DbUtils {
             return true;
         }
     }
-
-    //************************************************ tools ***********************************
 
     private long getLastAutoIncrementId(String tableName) throws DbException {
         long id = -1;
@@ -787,9 +731,6 @@ public class DbUtils {
         }
     }
 
-    private Lock writeLock = new ReentrantLock();
-    private volatile boolean writeLocked = false;
-
     private void beginTransaction() {
         if (allowTransaction) {
             database.beginTransaction();
@@ -814,7 +755,6 @@ public class DbUtils {
             writeLocked = false;
         }
     }
-
 
     public void execNonQuery(SqlInfo sqlInfo) throws DbException {
         debugSql(sqlInfo.getSql());
@@ -856,20 +796,76 @@ public class DbUtils {
         }
     }
 
-    /////////////////////// temp cache ////////////////////////////////////////////////////////////////
-    private final FindTempCache findTempCache = new FindTempCache();
+    public interface DbUpgradeListener {
+        void onUpgrade(DbUtils db, int oldVersion, int newVersion);
+    }
 
-    private class FindTempCache {
-        private FindTempCache() {
+    public static class DaoConfig {
+        private Context context;
+        private String dbName = "guolf.db"; // default db name
+        private int dbVersion = 1;
+        private DbUpgradeListener dbUpgradeListener;
+
+        private String dbDir;
+
+        public DaoConfig(Context context) {
+            this.context = context.getApplicationContext();
         }
 
+        public Context getContext() {
+            return context;
+        }
+
+        public String getDbName() {
+            return dbName;
+        }
+
+        public void setDbName(String dbName) {
+            if (!TextUtils.isEmpty(dbName)) {
+                this.dbName = dbName;
+            }
+        }
+
+        public int getDbVersion() {
+            return dbVersion;
+        }
+
+        public void setDbVersion(int dbVersion) {
+            this.dbVersion = dbVersion;
+        }
+
+        public DbUpgradeListener getDbUpgradeListener() {
+            return dbUpgradeListener;
+        }
+
+        public void setDbUpgradeListener(DbUpgradeListener dbUpgradeListener) {
+            this.dbUpgradeListener = dbUpgradeListener;
+        }
+
+        public String getDbDir() {
+            return dbDir;
+        }
+
+        /**
+         * set database dir
+         *
+         * @param dbDir If dbDir is null or empty, use the app default db dir.
+         */
+        public void setDbDir(String dbDir) {
+            this.dbDir = dbDir;
+        }
+    }
+
+    private class FindTempCache {
         /**
          * key: sql;
          * value: find result
          */
         private final ConcurrentHashMap<String, Object> cache = new ConcurrentHashMap<String, Object>();
-
         private long seq = 0;
+
+        private FindTempCache() {
+        }
 
         public void put(String sql, Object result) {
             if (sql != null && result != null) {

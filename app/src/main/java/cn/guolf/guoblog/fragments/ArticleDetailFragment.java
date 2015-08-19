@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,14 +28,6 @@ public class ArticleDetailFragment extends Fragment{
     private String sid;
     private String title;
 
-    public interface NewsDetailCallBack{
-        void onArticleLoadFinish(ArticleItem item,boolean success);
-        void CommentAction(String sid,String title);
-        void onVideoFullScreen(boolean isFullScreen);
-        void onShowHtmlVideoView(View html5VideoView);
-        void onHideHtmlVideoView(View html5VideoView);
-    }
-
     public static ArticleDetailFragment getInstance(String sid,String title){
         ArticleDetailFragment f = new ArticleDetailFragment();
         Bundle args = new Bundle();
@@ -44,6 +36,7 @@ public class ArticleDetailFragment extends Fragment{
         f.setArguments(args);
         return f;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +54,7 @@ public class ArticleDetailFragment extends Fragment{
         if(processer==null) {
             processer = new ArticleDetailProcesser(new ArticleDetailProvider(activity));
         }
-        processer.setActivity((ActionBarActivity) activity);
+        processer.setActivity((AppCompatActivity) activity);
         if(activity instanceof NewsDetailCallBack){
             processer.setCallBack((NewsDetailCallBack) activity);
         }
@@ -118,6 +111,18 @@ public class ArticleDetailFragment extends Fragment{
 
     public boolean onKeyDown(int keyCode, KeyEvent event){
         return processer.onKeyDown(keyCode, event);
+    }
+
+    public interface NewsDetailCallBack {
+        void onArticleLoadFinish(ArticleItem item, boolean success);
+
+        void CommentAction(String sid, String title);
+
+        void onVideoFullScreen(boolean isFullScreen);
+
+        void onShowHtmlVideoView(View html5VideoView);
+
+        void onHideHtmlVideoView(View html5VideoView);
     }
 
 }

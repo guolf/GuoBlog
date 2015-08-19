@@ -3,7 +3,7 @@ package cn.guolf.guoblog.activity;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.lib.CroutonStyle;
 import cn.guolf.guoblog.lib.ThemeManger;
-import cn.guolf.guoblog.widget.TranslucentStatus.TranslucentStatusHelper;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -21,24 +20,16 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  * Created by guolf on 7/17/15.
  */
 
-public abstract class BaseToolBarActivity extends ActionBarActivity {
-    protected TranslucentStatusHelper.Option option;
-    protected TranslucentStatusHelper helper;
+public abstract class BaseToolBarActivity extends AppCompatActivity {
     protected FrameLayout content;
     protected int colorPrimary;
     protected int colorPrimaryDark;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeManger.onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
         super.setContentView(getBasicContentLayout());
-        helper = TranslucentStatusHelper.from(this)
-                .setStatusView(findViewById(R.id.statusView))
-                .setActionBarSizeAttr(R.attr.actionBarSize)
-                .setTranslucentProxy(TranslucentStatusHelper.TranslucentProxy.STATUS_BAR)
-                .builder();
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         content = (FrameLayout) findViewById(R.id.content);
         TypedArray array = obtainStyledAttributes(new int[]{R.attr.colorPrimary,R.attr.colorPrimaryDark,R.attr.colorAccent});
@@ -47,10 +38,6 @@ public abstract class BaseToolBarActivity extends ActionBarActivity {
         CroutonStyle.buildStyleInfo(colorPrimaryDark);
         CroutonStyle.buildStyleConfirm(array.getColor(2, Style.holoGreenLight));
         array.recycle();
-        option = new TranslucentStatusHelper.Option()
-                .setStatusColor(colorPrimaryDark)
-                .setInsertProxy(TranslucentStatusHelper.InsertProxy.NONE);
-        helper.setOption(option);
     }
 
     @Override
@@ -86,7 +73,7 @@ public abstract class BaseToolBarActivity extends ActionBarActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        helper.notifyConfigureChanged();
+        // helper.notifyConfigureChanged();
     }
 
     @Override

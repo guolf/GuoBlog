@@ -3,7 +3,7 @@ http://www.guolingfa.cn
 
 个人博客APP
 
-###DEMO下载
+###下载
 [火速跳转](https://fir.im/guoblog)
 
 ###开源项目说明
@@ -20,28 +20,59 @@ http://www.guolingfa.cn
 
 * **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
 
-
-
 > **android-async-http**
+
+* **Link:** [https://github.com/loopj/android-async-http](https://github.com/loopj/android-async-http)
+
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
 
 > **android-gif-drawable**
 
+* **Link** [https://github.com/koral--/android-gif-drawable](https://github.com/koral--/android-gif-drawable)
+
+* **License:** `Licensed under the MIT License  (MIT);`
+
 > **subsampling-scale-image-view**
+
+* **Link:** [https://github.com/davemorrissey/subsampling-scale-image-view](https://github.com/davemorrissey/subsampling-scale-image-view)
+
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
 
 > **crouton**
 
+* **Link:** [https://github.com/keyboardsurfer/Crouton](https://github.com/keyboardsurfer/Crouton)
+
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
+
 > **filtermenu**
+
+* **Link:** [https://github.com/linroid/FilterMenu](https://github.com/linroid/FilterMenu)
+
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
 
 > **discrete-seekbar**
 
+* **Link:** [https://github.com/AnderWeb/discreteSeekBar](https://github.com/AnderWeb/discreteSeekBar)
+
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
+
 > **materialish-progress**
+
+* **Link:** [https://github.com/pnikosis/materialish-progress](https://github.com/pnikosis/materialish-progress)
+
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
 
 > **floatingactionbutton**
 
+* **Link:** [https://github.com/makovkastar/FloatingActionButton](https://github.com/makovkastar/FloatingActionButton)
+
+* **License:** `Licensed under the the MIT License (MIT);`
+
 > **material-ripple**
 
-> **materialish-progress**
+* **Link:** [https://github.com/balysv/material-ripple](https://github.com/balysv/material-ripple)
 
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
 
 ###License
 

@@ -13,4 +13,6 @@ public abstract class BaseArticleListDataProvider <Adapter extends BaseAdapter<A
     public BaseArticleListDataProvider(Activity activity) {
         super(activity);
     }
+
+    public abstract Boolean getIsCollection();
 }

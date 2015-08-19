@@ -1,10 +1,15 @@
 package cn.guolf.guoblog.entity;
 
+import cn.guolf.guoblog.lib.database.annotation.Id;
+import cn.guolf.guoblog.lib.database.annotation.Table;
+
 /**
  * Created by guolf on 7/17/15.
  */
+@Table(name = "Article")
 public class ArticleItem {
 
+    @Id
     private String ArticleId;
     private String ArticleTitle;
     private String ArticleContent;

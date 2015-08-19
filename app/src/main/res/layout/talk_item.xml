@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    card_view:cardBackgroundColor="?attr/cardBgColor"
     card_view:cardCornerRadius="5dp">
 
     <RelativeLayout
@@ -11,7 +12,6 @@
         android:padding="5dp">
 
         <TextView
-
             android:id="@+id/content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/content"
             android:text="2015-05-05"
-            android:textColor="@color/material_blue_grey_800"
+            android:textColor="?attr/subTitleColor"
             android:textSize="12sp" />
 
     </RelativeLayout>

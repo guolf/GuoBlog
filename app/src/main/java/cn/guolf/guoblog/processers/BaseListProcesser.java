@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.List;
 
@@ -71,7 +72,11 @@ public class BaseListProcesser<DataType,DataProvider extends ListDataProvider<Da
         Toolkit.runInUIThread(new Runnable() {
             @Override
             public void run() {
-                provider.loadData(startup);
+                try {
+                    provider.loadData(startup);
+                } catch (Exception e) {
+                    CrashReport.postCatchedException(e);
+                }
                 if (!provider.isCached() || PrefKit.getBoolean(mActivity, mActivity.getString(R.string.pref_auto_reflush_key), false)) {
                     mSwipeLayout.setRefreshing(true);
                     onRefresh();

@@ -15,3 +15,14 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keepclassmembers class * {
+    public <init>(org.json.JSONObject);
+}
+-keep public class cn.guolf.guoblog.R$*{
+    public static final int *;
+}
+#如果使用5.0+的sdk，取消以下注释
+#-keepclassmembers enum * {
+#    public static **[] values();
+#    public static ** valueOf(java.lang.String);
+#}

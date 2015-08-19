@@ -34,4 +34,5 @@
     <attr name="comment_reply_container_bg" format="reference" />
     <attr name="message_bg_left" format="reference" />
     <attr name="message_bg_right" format="reference" />
+    <attr name="cardBgColor" format="reference" />
 </resources>

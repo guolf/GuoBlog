@@ -1,5 +1,7 @@
 package cn.guolf.guoblog.fragments;
 
+import android.os.Bundle;
+
 import cn.guolf.guoblog.data.ListDataProvider;
 import cn.guolf.guoblog.data.impl.NetArticleListDataProvider;
 
@@ -8,6 +10,15 @@ import cn.guolf.guoblog.data.impl.NetArticleListDataProvider;
  */
 public class LearnArticleListFragment extends BaseArticleListFragment {
 
+
+    public static LearnArticleListFragment newInstance(Boolean isCollection) {
+
+        Bundle args = new Bundle();
+        args.putBoolean("isCollection", isCollection);
+        LearnArticleListFragment fragment = new LearnArticleListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     protected ListDataProvider getProvider() {
@@ -20,6 +31,11 @@ public class LearnArticleListFragment extends BaseArticleListFragment {
             @Override
             public String getTypeName() {
                 return "学无止境";
+            }
+
+            @Override
+            public Boolean getIsCollection() {
+                return getArguments() == null ? false : getArguments().getBoolean("isCollection", false);
             }
         };
     }

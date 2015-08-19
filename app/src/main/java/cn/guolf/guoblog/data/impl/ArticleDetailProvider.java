@@ -16,7 +16,6 @@ import cn.guolf.guoblog.MyApplication;
 import cn.guolf.guoblog.data.BaseDataProvider;
 import cn.guolf.guoblog.entity.ArticleItem;
 import cn.guolf.guoblog.lib.kits.FileCacheKit;
-import cn.guolf.guoblog.lib.kits.LogKits;
 import cn.guolf.guoblog.lib.kits.NetKit;
 import cn.guolf.guoblog.lib.kits.Toolkit;
 
@@ -30,7 +29,6 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
         @Override
         public void onStart() {
             if(callback!=null) {
-                LogKits.i("onStart");
                 callback.onLoadStart();
             }
         }
@@ -38,7 +36,6 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
         @Override
         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             if(callback!=null) {
-                LogKits.i("onFailure:"+responseString);
                 callback.onLoadFailure();
             }
         }
@@ -46,7 +43,6 @@ public class ArticleDetailProvider extends BaseDataProvider<String> {
         @Override
         public void onSuccess(int statusCode, Header[] headers, String responseString) {
             if(callback!=null){
-                LogKits.i("onSuccess:"+responseString);
                 callback.onLoadSuccess(responseString);
             }
         }

@@ -3,7 +3,7 @@ package cn.guolf.guoblog.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,9 +24,18 @@ public abstract class BaseListFragment<DataType, Adapter extends BaseAdapter<Dat
     extends Fragment {
 
     protected Processer processer;
+    protected Boolean isCollection = false;
     private BaseProcesserImpl.onOptionMenuSelect menuCallBack;
 
     protected abstract Provider getProvider();
+
+    public Boolean getIsCollection() {
+        return isCollection;
+    }
+
+    public void setIsCollection(Boolean isCollection) {
+        this.isCollection = isCollection;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +50,7 @@ public abstract class BaseListFragment<DataType, Adapter extends BaseAdapter<Dat
             processer = createProcesser(getProvider());
         }
         processer.setMenuCallBack(menuCallBack);
-        processer.setActivity((ActionBarActivity) activity);
+        processer.setActivity((AppCompatActivity) activity);
     }
 
     @Override

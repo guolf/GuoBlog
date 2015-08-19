@@ -15,4 +15,5 @@ public abstract class BaseArticleListFragment<Adapter extends BaseAdapter<Articl
     protected ArticleListProcesser<Provider> createProcesser(Provider provider) {
         return new ArticleListProcesser<>(provider);
     }
+
 }

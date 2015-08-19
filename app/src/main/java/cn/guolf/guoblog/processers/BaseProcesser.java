@@ -1,7 +1,7 @@
 package cn.guolf.guoblog.processers;
 
 import android.content.res.Configuration;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,9 +19,13 @@ public interface BaseProcesser<E,DataProvider extends BaseDataProvider<E>> {
     void onDestroy();
     void assumeView(View view);
     void loadData(boolean startup);
-    ActionBarActivity getActivity();
+
+    AppCompatActivity getActivity();
+
+    void setActivity(AppCompatActivity activity);
+
     void setProvider(DataProvider provider);
-    void setActivity(ActionBarActivity activity);
+
     boolean onOptionsItemSelected(MenuItem item);
     void onConfigurationChanged(Configuration newConfig);
     void onCreateOptionsMenu(Menu menu, MenuInflater inflater);

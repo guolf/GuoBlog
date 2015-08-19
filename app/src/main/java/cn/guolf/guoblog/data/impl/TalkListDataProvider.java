@@ -15,6 +15,7 @@ import cn.guolf.guoblog.entity.TalkItem;
 import cn.guolf.guoblog.entity.TalkListObject;
 import cn.guolf.guoblog.lib.CroutonStyle;
 import cn.guolf.guoblog.lib.handler.BaseHttpResponseHandler;
+import cn.guolf.guoblog.lib.kits.FileCacheKit;
 import cn.guolf.guoblog.lib.kits.NetKit;
 import cn.guolf.guoblog.lib.kits.Toolkit;
 
@@ -34,7 +35,7 @@ public class TalkListDataProvider extends ListDataProvider<TalkItem, TalkListAda
             if (current == 1) {
                 getAdapter().setDataSet(result.getData());
                 Toolkit.showCrouton(getActivity(), getActivity().getString(R.string.message_flush_success), CroutonStyle.INFO);
-                //FileCacheKit.getInstance().putAsync(getTypeKey().hashCode() + "", Toolkit.getGson().toJson(result), "list", null);
+                FileCacheKit.getInstance().putAsync(getTypeKey().hashCode() + "", Toolkit.getGson().toJson(result), "list", null);
             } else {
                 getAdapter().getDataSet().addAll(result.getData());
             }

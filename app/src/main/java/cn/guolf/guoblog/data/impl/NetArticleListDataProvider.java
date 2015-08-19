@@ -7,10 +7,12 @@ import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.ResponseHandlerInterface;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.guolf.guoblog.MyApplication;
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.activity.ArticleDetailActivity;
 import cn.guolf.guoblog.adapter.ArticleListAdapter;
@@ -19,6 +21,7 @@ import cn.guolf.guoblog.entity.ArticleListObject;
 import cn.guolf.guoblog.entity.ResponseObject;
 import cn.guolf.guoblog.fragments.ArticleDetailFragment;
 import cn.guolf.guoblog.lib.CroutonStyle;
+import cn.guolf.guoblog.lib.database.exception.DbException;
 import cn.guolf.guoblog.lib.handler.BaseHttpResponseHandler;
 import cn.guolf.guoblog.lib.kits.FileCacheKit;
 import cn.guolf.guoblog.lib.kits.NetKit;
@@ -27,7 +30,7 @@ import cn.guolf.guoblog.lib.kits.Toolkit;
 /**
  * Created by guolf on 7/17/15.
  */
-public abstract class NetArticleListDataProvider extends  BaseArticleListDataProvider<ArticleListAdapter> {
+public abstract class NetArticleListDataProvider extends BaseArticleListDataProvider<ArticleListAdapter> {
 
     private String topSid;
     private int current;
@@ -35,7 +38,7 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
 
     private ResponseHandlerInterface newsPage = new BaseHttpResponseHandler<ArticleListObject>(
             new TypeToken<ResponseObject<ArticleListObject>>() {
-            }){
+            }) {
 
         @Override
         protected void onSuccess(ArticleListObject result) {
@@ -59,6 +62,7 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
                 for (ArticleItem i : itemList) {
                     ids.add(i.getArticleId());
                 }
+                showToastAndCache(itemList, size - 1);
             }
         }
 
@@ -69,11 +73,12 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
 
         @Override
         public void onFinish() {
-            if(callback!=null){
+            if (callback != null) {
                 callback.onLoadFinish(40);
             }
         }
     };
+
 
     public NetArticleListDataProvider(Activity mActivity) {
         super(mActivity);
@@ -87,6 +92,10 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
 
     @Override
     public void loadNewData() {
+        if (getIsCollection()) {
+            loadData(false);
+            return;
+        }
         makeRequest(1, getTypeKey(), newsPage);
     }
 
@@ -95,7 +104,7 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
         makeRequest(current + 1, getTypeKey(), newsPage);
     }
 
-    public void makeRequest(int page, String type, ResponseHandlerInterface handlerInterface){
+    public void makeRequest(int page, String type, ResponseHandlerInterface handlerInterface) {
         NetKit.getInstance().getArticlelistByPage(page, type, handlerInterface);
     }
 
@@ -107,7 +116,7 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
                 Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
                 ArticleItem item = getAdapter().getDataSetItem(i - 1);
                 intent.putExtra(ArticleDetailFragment.ARTICLE_SID_KEY, item.getArticleId());
-                intent.putExtra(ArticleDetailFragment.ARTICLE_TITLE_KEY,item.getArticleTitle());
+                intent.putExtra(ArticleDetailFragment.ARTICLE_TITLE_KEY, item.getArticleTitle());
                 getActivity().startActivity(intent);
             }
         };
@@ -115,17 +124,31 @@ public abstract class NetArticleListDataProvider extends  BaseArticleListDataPro
 
     @Override
     public void loadData(boolean startup) {
-        ArrayList<ArticleItem> newsList = FileCacheKit.getInstance().getAsObject(getTypeKey().hashCode() + "", "list", new TypeToken<ArrayList<ArticleItem>>() {
-        });
-        if (newsList != null) {
-            hasCached = true;
-            topSid = newsList.get(1).getArticleId();
-            getAdapter().setDataSet(newsList);
+        if (getIsCollection()) {
+            // 收藏
+            this.hasCached = false;
+            List<ArticleItem> list = new ArrayList<>();
+            try {
+                list = MyApplication.getInstance().getDbUtils().findAll(ArticleItem.class);
+            } catch (DbException ex) {
+                CrashReport.postCatchedException(ex);
+            }
+            getAdapter().setDataSet(list);
             getAdapter().notifyDataSetChanged();
         } else {
-            this.hasCached = false;
+            ArrayList<ArticleItem> newsList = FileCacheKit.getInstance().getAsObject(getTypeKey().hashCode() + "", "list",
+                    new TypeToken<ArrayList<ArticleItem>>() {
+                    });
+            if (newsList != null) {
+                hasCached = true;
+                topSid = newsList.get(1).getArticleId();
+                getAdapter().setDataSet(newsList);
+                getAdapter().notifyDataSetChanged();
+            } else {
+                this.hasCached = false;
+            }
+            this.current = 1;
         }
-        this.current = 1;
     }
 
     private void showToastAndCache(List<ArticleItem> itemList, int size) {

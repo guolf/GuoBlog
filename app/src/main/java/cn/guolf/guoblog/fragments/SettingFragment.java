@@ -1,5 +1,6 @@
 package cn.guolf.guoblog.fragments;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -13,6 +14,7 @@ import java.io.File;
 import cn.guolf.guoblog.BuildConfig;
 import cn.guolf.guoblog.MyApplication;
 import cn.guolf.guoblog.R;
+import cn.guolf.guoblog.activity.AboutActivity;
 import cn.guolf.guoblog.activity.MainActivity;
 import cn.guolf.guoblog.lib.CroutonStyle;
 import cn.guolf.guoblog.lib.ThemeManger;
@@ -103,7 +105,8 @@ public class SettingFragment extends PreferenceFragment {
         about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment()).commit();
+                startActivity(new Intent(getActivity(), AboutActivity.class));
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment()).commit();
                 return false;
             }
         });
@@ -111,7 +114,7 @@ public class SettingFragment extends PreferenceFragment {
         // 列表显示大图
         findPreference(getString(R.string.pref_show_large_image_key)).setOnPreferenceChangeListener(listener);
 
-        // 新闻列表显示图片
+        // 文章列表显示图片
         findPreference(getString(R.string.pref_show_list_news_image_key)).setOnPreferenceChangeListener(listener);
     }
 

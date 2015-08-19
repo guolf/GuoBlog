@@ -1,9 +1,10 @@
 package cn.guolf.guoblog.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.View;
+
+import com.umeng.analytics.MobclickAgent;
 
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.lib.kits.PrefKit;
@@ -18,6 +19,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 public class ExtendBaseActivity extends BaseToolBarActivity implements SwipeBackActivityBase {
 
     private SwipeBackActivityHelper mSwipeBackActivityHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,18 @@ public class ExtendBaseActivity extends BaseToolBarActivity implements SwipeBack
         mSwipeBackActivityHelper = new SwipeBackActivityHelper(this);
         mSwipeBackActivityHelper.onActivityCreate();
         setSwipeBackEnable(PrefKit.getBoolean(this, R.string.pref_swipeback_key, true));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

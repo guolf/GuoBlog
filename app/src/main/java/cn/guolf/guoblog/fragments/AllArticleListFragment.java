@@ -21,6 +21,11 @@ public class AllArticleListFragment extends BaseArticleListFragment {
             public String getTypeName() {
                 return "全部文章";
             }
+
+            @Override
+            public Boolean getIsCollection() {
+                return false;
+            }
         };
     }
 

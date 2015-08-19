@@ -27,50 +27,46 @@ public class ArticleDetailActivity extends ExtendBaseActivity implements Article
     private FixViewPager pager;
     private FragmentAdapter adapter;
     private String title;
-    private boolean isNewDesignMode;
     private ViewGroup contentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
-        isNewDesignMode = PrefKit.getBoolean(this, R.string.pref_new_detail_key, true);
         if (bundle != null && bundle.containsKey(ArticleDetailFragment.ARTICLE_SID_KEY) && bundle.containsKey(ArticleDetailFragment.ARTICLE_TITLE_KEY)) {
             title = bundle.getString(ArticleDetailFragment.ARTICLE_TITLE_KEY);
             setTitle("详情：" + title);
             contentView = (ViewGroup) findViewById(R.id.content);
-            fragments.add(ArticleDetailFragment.getInstance(bundle.getString(ArticleDetailFragment.ARTICLE_SID_KEY) , title));
-            if (isNewDesignMode) {
-                setContentView(R.layout.pager_layout);
-                pager = (FixViewPager) findViewById(R.id.pager);
-                adapter = new FragmentAdapter(getSupportFragmentManager());
-                pager.setAdapter(adapter);
-                pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            fragments.add(ArticleDetailFragment.getInstance(bundle.getString(ArticleDetailFragment.ARTICLE_SID_KEY), title));
 
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            setContentView(R.layout.pager_layout);
+            pager = (FixViewPager) findViewById(R.id.pager);
+            adapter = new FragmentAdapter(getSupportFragmentManager());
+            pager.setAdapter(adapter);
+            pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == 0) {
+                        setTitle("详情：" + title);
+                        setSwipeBackEnable(PrefKit.getBoolean(ArticleDetailActivity.this, R.string.pref_swipeback_key, true));
+                    } else {
+                        setTitle("评论：" + title);
+                        setSwipeBackEnable(false);
                     }
+                }
 
-                    @Override
-                    public void onPageSelected(int position) {
-                        if (position == 0) {
-                            setTitle("详情：" + title);
-                            setSwipeBackEnable(PrefKit.getBoolean(ArticleDetailActivity.this, R.string.pref_swipeback_key, true));
-                        } else {
-                            setTitle("评论：" + title);
-                            setSwipeBackEnable(false);
-                        }
-                    }
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
+                }
+            });
 
-                    }
-                });
-            } else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content, fragments.get(0)).commit();
-            }
         } else {
             Toast.makeText(this, "缺少必要参数", Toast.LENGTH_SHORT).show();
             finish();
@@ -99,7 +95,7 @@ public class ArticleDetailActivity extends ExtendBaseActivity implements Article
 
     @Override
     public void CommentAction(String sid, String title) {
-
+        Toast.makeText(ArticleDetailActivity.this, "评论功能暂未开发", Toast.LENGTH_SHORT).show();
     }
 
     class FragmentAdapter extends FragmentPagerAdapter {
