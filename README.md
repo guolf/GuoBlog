@@ -3,6 +3,13 @@ http://www.guolingfa.cn
 
 个人博客APP
 
+###截图
+
+<img src="https://github.com/guolf/GuoBlog/blob/master/Screenshot/index.png" alt="screenshot" title="screenshot" style="width:80%,height:80"/>
+<img src="https://github.com/guolf/GuoBlog/blob/master/Screenshot/detial.png" alt="screenshot" title="screenshot" style="width:80%,height:80"/>
+<img src="https://github.com/guolf/GuoBlog/blob/master/Screenshot/setting.png" alt="screenshot" title="screenshot" style="width:80%,height:80"/>
+<img src="https://github.com/guolf/GuoBlog/blob/master/Screenshot/collection.png" alt="screenshot" title="screenshot" style="width:80%,height:80"/>
+
 ###下载
 [火速跳转](https://fir.im/guoblog)
 
