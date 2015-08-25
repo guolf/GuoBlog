@@ -17,6 +17,12 @@ package cn.guolf.guoblog.lib.database.table;
 
 import android.text.TextUtils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.util.HashSet;
+import java.util.List;
+
 import cn.guolf.guoblog.lib.database.annotation.Check;
 import cn.guolf.guoblog.lib.database.annotation.NotNull;
 import cn.guolf.guoblog.lib.database.annotation.Transient;
@@ -26,17 +32,8 @@ import cn.guolf.guoblog.lib.database.sqlite.FinderLazyLoader;
 import cn.guolf.guoblog.lib.database.sqlite.ForeignLazyLoader;
 import cn.guolf.guoblog.lib.kits.LogKits;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.util.HashSet;
-import java.util.List;
-
 
 public class ColumnUtils {
-
-    private ColumnUtils() {
-    }
 
     private static final HashSet<String> DB_PRIMITIVE_TYPES = new HashSet<>(14);
 
@@ -56,6 +53,9 @@ public class ColumnUtils {
         DB_PRIMITIVE_TYPES.add(Double.class.getName());
         DB_PRIMITIVE_TYPES.add(String.class.getName());
         DB_PRIMITIVE_TYPES.add(byte[].class.getName());
+    }
+
+    private ColumnUtils() {
     }
 
     public static boolean isDbPrimitiveType(Class<?> fieldType) {

@@ -16,12 +16,12 @@
 package cn.guolf.guoblog.lib.database.sqlite;
 
 
+import java.util.List;
+
 import cn.guolf.guoblog.lib.database.exception.DbException;
 import cn.guolf.guoblog.lib.database.table.ColumnUtils;
 import cn.guolf.guoblog.lib.database.table.Foreign;
 import cn.guolf.guoblog.lib.database.table.Table;
-
-import java.util.List;
 
 public class ForeignLazyLoader<T> {
     private final Foreign foreignColumn;
@@ -56,11 +56,11 @@ public class ForeignLazyLoader<T> {
         return entity;
     }
 
-    public void setColumnValue(Object value) {
-        this.columnValue = ColumnUtils.convert2DbColumnValueIfNeeded(value);
-    }
-
     public Object getColumnValue() {
         return columnValue;
+    }
+
+    public void setColumnValue(Object value) {
+        this.columnValue = ColumnUtils.convert2DbColumnValueIfNeeded(value);
     }
 }

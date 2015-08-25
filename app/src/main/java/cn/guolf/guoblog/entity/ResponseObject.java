@@ -1,8 +1,6 @@
 
 package cn.guolf.guoblog.entity;
 
-import java.util.List;
-
 /**
  * Created by ywwxhz on 2014/11/2.
  */

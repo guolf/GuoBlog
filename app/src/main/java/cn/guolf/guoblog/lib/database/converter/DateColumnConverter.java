@@ -3,9 +3,9 @@ package cn.guolf.guoblog.lib.database.converter;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import cn.guolf.guoblog.lib.database.sqlite.ColumnDbType;
-
 import java.util.Date;
+
+import cn.guolf.guoblog.lib.database.sqlite.ColumnDbType;
 
 /**
  * Author: wyouflf

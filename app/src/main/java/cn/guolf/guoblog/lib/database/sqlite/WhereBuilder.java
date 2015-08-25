@@ -17,13 +17,13 @@ package cn.guolf.guoblog.lib.database.sqlite;
 
 import android.text.TextUtils;
 
-import cn.guolf.guoblog.lib.database.converter.ColumnConverterFactory;
-import cn.guolf.guoblog.lib.database.table.ColumnUtils;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import cn.guolf.guoblog.lib.database.converter.ColumnConverterFactory;
+import cn.guolf.guoblog.lib.database.table.ColumnUtils;
 
 /**
  * Author: wyouflf

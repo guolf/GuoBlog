@@ -58,6 +58,7 @@ public class MyApplication extends Application {
         MobclickAgent.setCatchUncaughtExceptions(false);
         MobclickAgent.setDebugMode(BuildConfig.DEBUG);
         MobclickAgent.updateOnlineConfig(this);
+        MobclickAgent.openActivityDurationTrack(false);
 
     }
 

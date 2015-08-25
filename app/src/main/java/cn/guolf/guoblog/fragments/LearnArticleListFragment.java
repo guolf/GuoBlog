@@ -2,8 +2,11 @@ package cn.guolf.guoblog.fragments;
 
 import android.os.Bundle;
 
+import com.umeng.analytics.MobclickAgent;
+
 import cn.guolf.guoblog.data.ListDataProvider;
 import cn.guolf.guoblog.data.impl.NetArticleListDataProvider;
+import cn.guolf.guoblog.lib.kits.LogKits;
 
 /**
  * Created by guolf on 7/22/15.
@@ -43,5 +46,23 @@ public class LearnArticleListFragment extends BaseArticleListFragment {
     @Override
     public boolean hasMenu() {
         return true;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogKits.i("LearnArticleListFragment onCreate");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("LearnArticleListFragment");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("LearnArticleListFragment");
     }
 }

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +98,20 @@ public class ArticleDetailActivity extends ExtendBaseActivity implements Article
     @Override
     public void CommentAction(String sid, String title) {
         Toast.makeText(ArticleDetailActivity.this, "评论功能暂未开发", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("ArticleDetailActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("ArticleDetailActivity");
+        MobclickAgent.onPause(this);
     }
 
     class FragmentAdapter extends FragmentPagerAdapter {

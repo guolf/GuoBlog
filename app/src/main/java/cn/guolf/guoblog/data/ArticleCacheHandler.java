@@ -70,7 +70,7 @@ public class ArticleCacheHandler extends Handler {
         AtomicReference<String> info = new AtomicReference<>();
         switch (msg.what) {
             case MESSAGE_UPDATE_PROGRESS:
-                info.set("正在缓存第 " + len + " 条新闻");
+                info.set("正在缓存第 " + len + " 条文章");
                 builder.setProgress(size, len, false);
                 builder.setContentText(info.get());
                 manager.notify(0, notificationCompt(builder));

@@ -16,13 +16,25 @@
 package cn.guolf.guoblog.lib.database.table;
 
 
-import cn.guolf.guoblog.lib.database.annotation.NoAutoIncrement;
-import cn.guolf.guoblog.lib.kits.LogKits;
-
 import java.lang.reflect.Field;
 import java.util.HashSet;
 
+import cn.guolf.guoblog.lib.database.annotation.NoAutoIncrement;
+import cn.guolf.guoblog.lib.kits.LogKits;
+
 public class Id extends Column {
+
+    private static final HashSet<String> INTEGER_TYPES = new HashSet<String>(2);
+    private static final HashSet<String> AUTO_INCREMENT_TYPES = new HashSet<String>(4);
+
+    static {
+        INTEGER_TYPES.add(int.class.getName());
+        INTEGER_TYPES.add(Integer.class.getName());
+
+        AUTO_INCREMENT_TYPES.addAll(INTEGER_TYPES);
+        AUTO_INCREMENT_TYPES.add(long.class.getName());
+        AUTO_INCREMENT_TYPES.add(Long.class.getName());
+    }
 
     private String columnFieldClassName;
     private boolean isAutoIncrementChecked = false;
@@ -75,17 +87,5 @@ public class Id extends Column {
             }
         }
         return null;
-    }
-
-    private static final HashSet<String> INTEGER_TYPES = new HashSet<String>(2);
-    private static final HashSet<String> AUTO_INCREMENT_TYPES = new HashSet<String>(4);
-
-    static {
-        INTEGER_TYPES.add(int.class.getName());
-        INTEGER_TYPES.add(Integer.class.getName());
-
-        AUTO_INCREMENT_TYPES.addAll(INTEGER_TYPES);
-        AUTO_INCREMENT_TYPES.add(long.class.getName());
-        AUTO_INCREMENT_TYPES.add(Long.class.getName());
     }
 }

@@ -17,15 +17,15 @@ package cn.guolf.guoblog.lib.database.table;
 
 import android.database.Cursor;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 import cn.guolf.guoblog.lib.database.converter.ColumnConverter;
 import cn.guolf.guoblog.lib.database.converter.ColumnConverterFactory;
 import cn.guolf.guoblog.lib.database.exception.DbException;
 import cn.guolf.guoblog.lib.database.sqlite.ColumnDbType;
 import cn.guolf.guoblog.lib.database.sqlite.ForeignLazyLoader;
 import cn.guolf.guoblog.lib.kits.LogKits;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 public class Foreign extends Column {
 

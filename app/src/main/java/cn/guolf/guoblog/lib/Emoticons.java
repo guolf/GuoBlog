@@ -7,11 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
+
 import java.util.HashMap;
 
-import static cn.guolf.guoblog.BuildConfig.DEBUG;
-
 import cn.guolf.guoblog.lib.kits.UIKit;
+
+import static cn.guolf.guoblog.BuildConfig.DEBUG;
 
 public class Emoticons{
 

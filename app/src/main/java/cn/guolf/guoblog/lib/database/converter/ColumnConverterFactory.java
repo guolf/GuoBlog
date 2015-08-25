@@ -1,10 +1,10 @@
 package cn.guolf.guoblog.lib.database.converter;
 
 
-import cn.guolf.guoblog.lib.database.sqlite.ColumnDbType;
-
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
+
+import cn.guolf.guoblog.lib.database.sqlite.ColumnDbType;
 
 /**
  * Author: wyouflf
@@ -12,53 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 下午10:27
  */
 public class ColumnConverterFactory {
-
-    private ColumnConverterFactory() {
-    }
-
-    public static ColumnConverter getColumnConverter(Class columnType) {
-        if (columnType_columnConverter_map.containsKey(columnType.getName())) {
-            return columnType_columnConverter_map.get(columnType.getName());
-        } else if (ColumnConverter.class.isAssignableFrom(columnType)) {
-            try {
-                ColumnConverter columnConverter = (ColumnConverter) columnType.newInstance();
-                if (columnConverter != null) {
-                    columnType_columnConverter_map.put(columnType.getName(), columnConverter);
-                }
-                return columnConverter;
-            } catch (Throwable e) {
-            }
-        }
-        return null;
-    }
-
-    public static ColumnDbType getDbColumnType(Class columnType) {
-        ColumnConverter converter = getColumnConverter(columnType);
-        if (converter != null) {
-            return converter.getColumnDbType();
-        }
-        return ColumnDbType.TEXT;
-    }
-
-    public static void registerColumnConverter(Class columnType, ColumnConverter columnConverter) {
-        columnType_columnConverter_map.put(columnType.getName(), columnConverter);
-    }
-
-    public static boolean isSupportColumnConverter(Class columnType) {
-        if (columnType_columnConverter_map.containsKey(columnType.getName())) {
-            return true;
-        } else if (ColumnConverter.class.isAssignableFrom(columnType)) {
-            try {
-                ColumnConverter columnConverter = (ColumnConverter) columnType.newInstance();
-                if (columnConverter != null) {
-                    columnType_columnConverter_map.put(columnType.getName(), columnConverter);
-                }
-                return columnConverter == null;
-            } catch (Throwable e) {
-            }
-        }
-        return false;
-    }
 
     private static final ConcurrentHashMap<String, ColumnConverter> columnType_columnConverter_map;
 
@@ -108,5 +61,52 @@ public class ColumnConverterFactory {
 
         StringColumnConverter stringColumnConverter = new StringColumnConverter();
         columnType_columnConverter_map.put(String.class.getName(), stringColumnConverter);
+    }
+
+    private ColumnConverterFactory() {
+    }
+
+    public static ColumnConverter getColumnConverter(Class columnType) {
+        if (columnType_columnConverter_map.containsKey(columnType.getName())) {
+            return columnType_columnConverter_map.get(columnType.getName());
+        } else if (ColumnConverter.class.isAssignableFrom(columnType)) {
+            try {
+                ColumnConverter columnConverter = (ColumnConverter) columnType.newInstance();
+                if (columnConverter != null) {
+                    columnType_columnConverter_map.put(columnType.getName(), columnConverter);
+                }
+                return columnConverter;
+            } catch (Throwable e) {
+            }
+        }
+        return null;
+    }
+
+    public static ColumnDbType getDbColumnType(Class columnType) {
+        ColumnConverter converter = getColumnConverter(columnType);
+        if (converter != null) {
+            return converter.getColumnDbType();
+        }
+        return ColumnDbType.TEXT;
+    }
+
+    public static void registerColumnConverter(Class columnType, ColumnConverter columnConverter) {
+        columnType_columnConverter_map.put(columnType.getName(), columnConverter);
+    }
+
+    public static boolean isSupportColumnConverter(Class columnType) {
+        if (columnType_columnConverter_map.containsKey(columnType.getName())) {
+            return true;
+        } else if (ColumnConverter.class.isAssignableFrom(columnType)) {
+            try {
+                ColumnConverter columnConverter = (ColumnConverter) columnType.newInstance();
+                if (columnConverter != null) {
+                    columnType_columnConverter_map.put(columnType.getName(), columnConverter);
+                }
+                return columnConverter == null;
+            } catch (Throwable e) {
+            }
+        }
+        return false;
     }
 }

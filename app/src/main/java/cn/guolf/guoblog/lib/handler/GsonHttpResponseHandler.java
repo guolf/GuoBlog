@@ -2,11 +2,12 @@ package cn.guolf.guoblog.lib.handler;
 
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.TextHttpResponseHandler;
-import cn.guolf.guoblog.lib.kits.Toolkit;
 
 import org.apache.http.Header;
 
 import java.lang.reflect.Type;
+
+import cn.guolf.guoblog.lib.kits.Toolkit;
 
 /**
  * Created by ywwxhz on 2014/9/23.

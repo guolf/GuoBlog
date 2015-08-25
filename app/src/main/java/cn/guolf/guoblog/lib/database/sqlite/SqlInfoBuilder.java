@@ -16,6 +16,12 @@
 package cn.guolf.guoblog.lib.database.sqlite;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
 import cn.guolf.guoblog.lib.database.DbUtils;
 import cn.guolf.guoblog.lib.database.exception.DbException;
 import cn.guolf.guoblog.lib.database.table.Column;
@@ -26,12 +32,6 @@ import cn.guolf.guoblog.lib.database.table.KeyValue;
 import cn.guolf.guoblog.lib.database.table.Table;
 import cn.guolf.guoblog.lib.database.table.TableUtils;
 import cn.guolf.guoblog.lib.kits.LogKits;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * Build "insert", "replace",，"update", "delete" and "create" sql.

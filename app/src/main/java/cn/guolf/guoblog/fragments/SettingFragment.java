@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.support.v4.preference.PreferenceFragment;
 import android.text.format.Formatter;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.update.UmengUpdateAgent;
 
 import java.io.File;
 
@@ -19,6 +21,7 @@ import cn.guolf.guoblog.activity.MainActivity;
 import cn.guolf.guoblog.lib.CroutonStyle;
 import cn.guolf.guoblog.lib.ThemeManger;
 import cn.guolf.guoblog.lib.kits.FileKit;
+import cn.guolf.guoblog.lib.kits.PrefKit;
 import cn.guolf.guoblog.lib.kits.Toolkit;
 
 /**
@@ -43,6 +46,15 @@ public class SettingFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_general);
         findPreference(getString(R.string.pref_version_key)).setSummary(getVersionName());
+        findPreference(getString(R.string.pref_version_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getActivity(), "检查新版本...", Toast.LENGTH_SHORT).show();
+                PrefKit.writeBoolean(getActivity(), "checkUpdate", true);
+                UmengUpdateAgent.forceUpdate(getActivity());
+                return false;
+            }
+        });
 
         // 清理应用缓存
         preference = findPreference(getString(R.string.pref_clean_cache_key));

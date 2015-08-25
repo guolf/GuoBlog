@@ -81,12 +81,14 @@ public class AboutActivity extends AppCompatActivity implements SwipeBackActivit
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("AboutActivity");
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd("AboutActivity");
         MobclickAgent.onPause(this);
     }
 

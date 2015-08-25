@@ -2,6 +2,8 @@ package cn.guolf.guoblog.fragments;
 
 import android.os.Bundle;
 
+import com.umeng.analytics.MobclickAgent;
+
 import cn.guolf.guoblog.data.ListDataProvider;
 import cn.guolf.guoblog.data.impl.NetArticleListDataProvider;
 
@@ -43,5 +45,17 @@ public class LifeArticleListFragment extends BaseArticleListFragment {
     @Override
     public boolean hasMenu() {
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("LifeArticleListFragment");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("LifeArticleListFragment");
     }
 }

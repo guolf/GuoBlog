@@ -1,5 +1,7 @@
 package cn.guolf.guoblog.fragments;
 
+import com.umeng.analytics.MobclickAgent;
+
 import cn.guolf.guoblog.data.ListDataProvider;
 import cn.guolf.guoblog.data.impl.NetArticleListDataProvider;
 
@@ -32,5 +34,17 @@ public class AllArticleListFragment extends BaseArticleListFragment {
     @Override
     public boolean hasMenu() {
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("AllArticleListFragment");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("AllArticleListFragment");
     }
 }

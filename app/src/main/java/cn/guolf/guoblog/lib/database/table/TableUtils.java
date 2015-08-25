@@ -17,16 +17,25 @@ package cn.guolf.guoblog.lib.database.table;
 
 import android.text.TextUtils;
 
-import cn.guolf.guoblog.lib.database.annotation.Table;
-import cn.guolf.guoblog.lib.database.converter.ColumnConverterFactory;
-import cn.guolf.guoblog.lib.kits.LogKits;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cn.guolf.guoblog.lib.database.annotation.Table;
+import cn.guolf.guoblog.lib.database.converter.ColumnConverterFactory;
+import cn.guolf.guoblog.lib.kits.LogKits;
+
 public class TableUtils {
+
+    /**
+     * key: entityType.name
+     */
+    private static ConcurrentHashMap<String, HashMap<String, Column>> entityColumnsMap = new ConcurrentHashMap<>();
+    /**
+     * key: entityType.name
+     */
+    private static ConcurrentHashMap<String, Id> entityIdMap = new ConcurrentHashMap<>();
 
     private TableUtils() {
     }
@@ -46,11 +55,6 @@ public class TableUtils {
         }
         return null;
     }
-
-    /**
-     * key: entityType.name
-     */
-    private static ConcurrentHashMap<String, HashMap<String, Column>> entityColumnsMap = new ConcurrentHashMap<>();
 
     /* package */
     static synchronized HashMap<String, Column> getColumnMap(Class<?> entityType) {
@@ -110,11 +114,6 @@ public class TableUtils {
         }
         return getColumnMap(entityType).get(columnName);
     }
-
-    /**
-     * key: entityType.name
-     */
-    private static ConcurrentHashMap<String, Id> entityIdMap = new ConcurrentHashMap<>();
 
     /* package */
     static synchronized Id getId(Class<?> entityType) {

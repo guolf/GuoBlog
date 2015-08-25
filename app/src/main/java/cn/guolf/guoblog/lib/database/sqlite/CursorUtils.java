@@ -17,6 +17,8 @@ package cn.guolf.guoblog.lib.database.sqlite;
 
 import android.database.Cursor;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.guolf.guoblog.lib.database.DbUtils;
 import cn.guolf.guoblog.lib.database.table.Column;
 import cn.guolf.guoblog.lib.database.table.DbModel;
@@ -24,8 +26,6 @@ import cn.guolf.guoblog.lib.database.table.Finder;
 import cn.guolf.guoblog.lib.database.table.Id;
 import cn.guolf.guoblog.lib.database.table.Table;
 import cn.guolf.guoblog.lib.kits.LogKits;
-
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CursorUtils {
 
@@ -85,12 +85,11 @@ public class CursorUtils {
     }
 
     public static class FindCacheSequence {
-        private FindCacheSequence() {
-        }
-
-        private static long seq = 0;
         private static final String FOREIGN_LAZY_LOADER_CLASS_NAME = ForeignLazyLoader.class.getName();
         private static final String FINDER_LAZY_LOADER_CLASS_NAME = FinderLazyLoader.class.getName();
+        private static long seq = 0;
+        private FindCacheSequence() {
+        }
 
         public static long getSeq() {
             String findMethodCaller = Thread.currentThread().getStackTrace()[4].getClassName();
@@ -102,12 +101,11 @@ public class CursorUtils {
     }
 
     private static class EntityTempCache {
+        private static final ConcurrentHashMap<String, Object> cache = new ConcurrentHashMap<String, Object>();
+        private static long seq = 0;
+
         private EntityTempCache() {
         }
-
-        private static final ConcurrentHashMap<String, Object> cache = new ConcurrentHashMap<String, Object>();
-
-        private static long seq = 0;
 
         public static <T> void put(Class<T> entityType, Object idValue, Object entity) {
             cache.put(entityType.getName() + "#" + idValue, entity);

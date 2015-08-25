@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.data.impl.ArticleDetailProvider;
 import cn.guolf.guoblog.entity.ArticleItem;
@@ -26,7 +28,7 @@ public class ArticleDetailFragment extends Fragment{
     public static final String ARTICLE_TITLE_KEY = "key_article_title";
     private ArticleDetailProcesser processer;
     private String sid;
-    private String title;
+    private String title = "";
 
     public static ArticleDetailFragment getInstance(String sid,String title){
         ArticleDetailFragment f = new ArticleDetailFragment();
@@ -89,12 +91,14 @@ public class ArticleDetailFragment extends Fragment{
     public void onResume() {
         super.onResume();
         processer.onResume();
+        MobclickAgent.onPageStart("ArticleDetailFragment.".concat(title));
     }
 
     @Override
     public void onPause() {
         super.onStop();
         processer.onPause();
+        MobclickAgent.onPageEnd("ArticleDetailFragment.".concat(title));
     }
 
     @Override

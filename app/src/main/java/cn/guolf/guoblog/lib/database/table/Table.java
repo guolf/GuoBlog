@@ -17,32 +17,30 @@ package cn.guolf.guoblog.lib.database.table;
 
 import android.text.TextUtils;
 
-import cn.guolf.guoblog.lib.database.DbUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.guolf.guoblog.lib.database.DbUtils;
+
 
 public class Table {
-
-    public final DbUtils db;
-    public final String tableName;
-    public final Id id;
-
-    /**
-     * key: columnName
-     */
-    public final HashMap<String, Column> columnMap;
-
-    /**
-     * key: columnName
-     */
-    public final HashMap<String, Finder> finderMap;
 
     /**
      * key: dbName#className
      */
     private static final HashMap<String, Table> tableMap = new HashMap<String, Table>();
+    public final DbUtils db;
+    public final String tableName;
+    public final Id id;
+    /**
+     * key: columnName
+     */
+    public final HashMap<String, Column> columnMap;
+    /**
+     * key: columnName
+     */
+    public final HashMap<String, Finder> finderMap;
+    private boolean checkedDatabase;
 
     private Table(DbUtils db, Class<?> entityType) {
         this.db = db;
@@ -92,8 +90,6 @@ public class Table {
             }
         }
     }
-
-    private boolean checkedDatabase;
 
     public boolean isCheckedDatabase() {
         return checkedDatabase;

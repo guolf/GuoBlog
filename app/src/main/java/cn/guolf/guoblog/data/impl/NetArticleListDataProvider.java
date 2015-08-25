@@ -133,6 +133,10 @@ public abstract class NetArticleListDataProvider extends BaseArticleListDataProv
             } catch (DbException ex) {
                 CrashReport.postCatchedException(ex);
             }
+            if (callback != null) {
+                callback.onLoadFinish(40);
+            }
+            showToast(list == null ? 0 : list.size());
             getAdapter().setDataSet(list);
             getAdapter().notifyDataSetChanged();
         } else {
@@ -159,4 +163,13 @@ public abstract class NetArticleListDataProvider extends BaseArticleListDataProv
         }
         FileCacheKit.getInstance().putAsync(getTypeKey().hashCode() + "", Toolkit.getGson().toJson(itemList), "list", null);
     }
+
+    private void showToast(int size) {
+        if (size < 1) {
+            Toolkit.showCrouton(getActivity(), getActivity().getString(R.string.message_no_new_news), CroutonStyle.CONFIRM);
+        } else {
+            Toolkit.showCrouton(getActivity(), getActivity().getString(R.string.message_new_news, size), CroutonStyle.INFO);
+        }
+    }
+
 }

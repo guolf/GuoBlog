@@ -17,28 +17,24 @@ package cn.guolf.guoblog.lib.database.table;
 
 import android.database.Cursor;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import cn.guolf.guoblog.lib.database.converter.ColumnConverter;
 import cn.guolf.guoblog.lib.database.converter.ColumnConverterFactory;
 import cn.guolf.guoblog.lib.database.sqlite.ColumnDbType;
 import cn.guolf.guoblog.lib.kits.LogKits;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 public class Column {
 
-    private Table table;
-
-    private int index = -1;
-
     protected final String columnName;
-    private final Object defaultValue;
-
     protected final Method getMethod;
     protected final Method setMethod;
-
     protected final Field columnField;
     protected final ColumnConverter columnConverter;
+    private final Object defaultValue;
+    private Table table;
+    private int index = -1;
 
     /* package */ Column(Class<?> entityType, Field field) {
         this.columnField = field;

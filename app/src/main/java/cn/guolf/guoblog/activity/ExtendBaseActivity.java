@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 
-import com.umeng.analytics.MobclickAgent;
-
 import cn.guolf.guoblog.R;
 import cn.guolf.guoblog.lib.kits.PrefKit;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -32,13 +30,11 @@ public class ExtendBaseActivity extends BaseToolBarActivity implements SwipeBack
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
     }
 
     @Override

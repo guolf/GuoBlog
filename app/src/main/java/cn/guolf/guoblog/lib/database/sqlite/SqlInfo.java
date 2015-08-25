@@ -16,9 +16,9 @@
 package cn.guolf.guoblog.lib.database.sqlite;
 
 
-import cn.guolf.guoblog.lib.database.table.ColumnUtils;
-
 import java.util.LinkedList;
+
+import cn.guolf.guoblog.lib.database.table.ColumnUtils;
 
 public class SqlInfo {
 
