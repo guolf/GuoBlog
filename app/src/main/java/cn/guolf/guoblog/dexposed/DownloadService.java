@@ -9,6 +9,7 @@ import com.loopj.android.http.ResponseHandlerInterface;
 import com.taobao.android.dexposed.DexposedBridge;
 import com.taobao.patch.PatchMain;
 import com.taobao.patch.PatchResult;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.apache.http.Header;
 
@@ -21,12 +22,21 @@ import cn.guolf.guoblog.lib.kits.LogKits;
 import cn.guolf.guoblog.lib.kits.NetKit;
 import cn.guolf.guoblog.lib.kits.Toolkit;
 
-
+/**
+ * 1、判断当前机型是否支持dexposed，以及版本是否大于5.0
+ * 2、判断当前版本是否存在patch
+ * 3、下载patch文件
+ * 4、判断patch与当前应用签名是否相同
+ * 5、加载patch
+ * json 格式
+ * {"apkVersion":"1.0","flag":"1","patchUrl":"http://10.168.3.102/app-debug.apk"}
+ */
 public class DownloadService extends IntentService {
 
     public static final String ACTION_PATCH = "cn.guolf.guoblog.dexposed.action.PATCH";
     public static final String EXTRA_PARAM1 = "cn.guolf.guoblog.dexposed.extra.URL";
-    FileAsyncHttpResponseHandler fileAsyncHttpResponseHandler = new FileAsyncHttpResponseHandler(MyApplication.getInstance()) {
+
+    FileAsyncHttpResponseHandler fileAsyncHttpResponseHandler = new FileAsyncHttpResponseHandler(new File(MyApplication.getInstance().getCacheDir().getAbsolutePath() + "test.apk")) {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
@@ -41,12 +51,11 @@ public class DownloadService extends IntentService {
             String sig2 = Toolkit.getInstallPackageSignature(MyApplication.getInstance(), "cn.guolf.guoblog");
             LogKits.i("sig1:" + sig1 + "\nsig2:" + sig2);
             if (sig1.equals(sig2)) {
-                LogKits.i("签名符合");
                 PatchResult result = PatchMain.load(MyApplication.getInstance(), file.getAbsolutePath(), null);
                 if (result.isSuccess()) {
                     LogKits.e("patch success!");
                 } else {
-                    LogKits.e("patch error is " + result.getErrorInfo());
+                    CrashReport.postCatchedException(result.getThrowbale());
                 }
             } else {
                 LogKits.i("签名不符");
@@ -59,19 +68,16 @@ public class DownloadService extends IntentService {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            //CrashReport.postCatchedException(throwable);
-            LogKits.i(responseString);
+            CrashReport.postCatchedException(throwable);
         }
 
         @Override
         protected void onError(int statusCode, Header[] headers, String responseString, Throwable cause) {
-            //CrashReport.postCatchedException(cause);
-            LogKits.i(responseString);
+            CrashReport.postCatchedException(cause);
         }
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, String responseString, HotPatch patch) {
-            LogKits.i("onSuccess:" + patch.getPatchUrl());
             if (patch.getFlag().equals("1")) {
                 // 存在补丁包，下载
                 NetKit.getInstance().downloadFile(patch.getPatchUrl(), fileAsyncHttpResponseHandler);
@@ -100,11 +106,11 @@ public class DownloadService extends IntentService {
         LogKits.i("param1:" + param1);
         isSupport = DexposedBridge.canDexposed(MyApplication.getInstance());
         isLDevice = android.os.Build.VERSION.SDK_INT >= 21;
-//        if (isSupport && !isLDevice) {
-        NetKit.getInstance().getContentByUrl(param1, handlerInterface);
-//        } else {
-//            LogKits.i("not Support");
-//        }
+        if (isSupport && !isLDevice) {
+            NetKit.getInstance().getContentByUrl(param1, handlerInterface);
+        } else {
+            LogKits.i("not Support");
+        }
     }
 
 }
