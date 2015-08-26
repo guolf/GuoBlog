@@ -19,9 +19,7 @@ import java.util.List;
 import cn.guolf.guoblog.MyApplication;
 import cn.guolf.guoblog.lib.Configure;
 
-/**
- * Created by ywwxhz on 2014/10/17.
- */
+
 public class NetKit {
 
     public static final String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
@@ -111,6 +109,10 @@ public class NetKit {
         mClient.get(Configure.buildArticleUrl(id),handlerInterface);
     }
 
+    public void getContentByUrl(String url, ResponseHandlerInterface handlerInterface) {
+        mClient.get(url, handlerInterface);
+    }
+
     public void getArticleDetailByUrlSync(String id, ResponseHandlerInterface handlerInterface) {
         mSyncHttpClient.get(Configure.buildArticleUrl(id), handlerInterface);
     }
@@ -123,6 +125,11 @@ public class NetKit {
         params.add("_", System.currentTimeMillis() + "");
         mClient.get(null, Configure.TALK_LIST_URL, getAuthHeader(), params, responseHandlerInterface);
     }
+
+    public void downloadFile(String url, ResponseHandlerInterface handler) {
+        mClient.get(url, handler);
+    }
+
 
     public AsyncHttpClient getClient() {
         return mClient;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.guolf.guoblog" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,7 +14,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Basic">
+        android:theme="@style/Theme.Basic"
+        tools:replace="allowBackup">
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name" >
@@ -28,16 +30,33 @@
         <activity android:name=".activity.AboutActivity" />
 
         <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService"></service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+
+        <service
             android:name=".service.LogUploadService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="55d27e0ee0f55ad4d2000516"></meta-data>
+            android:value="55d27e0ee0f55ad4d2000516" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${CHANNEL_NAME}" />
+
+        <service
+            android:name=".dexposed.DownloadService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.guolf.guoblog.dexposed.action.PATCH"></action>
+                <category android:name="ANDROID.INTENT.CATEGORY.DEFAULT"></category>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

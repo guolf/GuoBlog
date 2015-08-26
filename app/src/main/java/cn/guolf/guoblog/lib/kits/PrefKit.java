@@ -48,6 +48,13 @@ public class PrefKit {
         edit.apply();
     }
 
+    public static void writeString(Context context, String key, String value) {
+        SharedPreferences appPrefs = getSharedPreferences(context);
+        SharedPreferences.Editor edit = appPrefs.edit();
+        edit.putString(key, value);
+        edit.apply();
+    }
+
     public static int getInt(Context context, String key, int def) {
         SharedPreferences appPrefs = getSharedPreferences(context);
         return appPrefs.getInt(key, def);

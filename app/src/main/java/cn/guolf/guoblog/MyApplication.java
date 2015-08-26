@@ -9,6 +9,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.taobao.android.dexposed.DexposedBridge;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
@@ -60,6 +61,8 @@ public class MyApplication extends Application {
         MobclickAgent.updateOnlineConfig(this);
         MobclickAgent.openActivityDurationTrack(false);
 
+        // dexposed
+        DexposedBridge.canDexposed(this);
     }
 
     public void initImageLoader(Context context) {

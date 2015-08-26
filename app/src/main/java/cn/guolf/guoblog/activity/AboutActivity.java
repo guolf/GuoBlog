@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -57,6 +58,18 @@ public class AboutActivity extends AppCompatActivity implements SwipeBackActivit
         });
 
         ((TextView) findViewById(R.id.tvVersion)).setText("Version:" + BuildConfig.VERSION_NAME);
+
+        findViewById(R.id.tvVersion).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testPatch();
+            }
+        });
+    }
+
+    // dexposed测试。注入成功则显示其他内容。
+    private void testPatch() {
+        Toast.makeText(AboutActivity.this, "OK", Toast.LENGTH_SHORT).show();
     }
 
     @Override
