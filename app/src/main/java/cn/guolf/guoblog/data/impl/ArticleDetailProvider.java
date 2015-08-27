@@ -24,61 +24,62 @@ import cn.guolf.guoblog.lib.kits.Toolkit;
  */
 public class ArticleDetailProvider extends BaseDataProvider<String> {
 
-    private TextHttpResponseHandler handler =  new TextHttpResponseHandler() {
+    private TextHttpResponseHandler handler = new TextHttpResponseHandler() {
 
         @Override
         public void onStart() {
-            if(callback!=null) {
+            if (callback != null) {
                 callback.onLoadStart();
             }
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            if(callback!=null) {
+            if (callback != null) {
                 callback.onLoadFailure();
             }
         }
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, String responseString) {
-            if(callback!=null){
+            if (callback != null) {
                 callback.onLoadSuccess(responseString);
             }
         }
     };
 
-    public ArticleDetailProvider(Activity activity){
+    public ArticleDetailProvider(Activity activity) {
         super(activity);
     }
 
-    public static boolean handleResponceString(ArticleItem item,String resp,boolean shouldCache){
-        return handleResponceString(item, resp,shouldCache,false);
+    public static boolean handleResponceString(ArticleItem item, String resp, boolean shouldCache) {
+        return handleResponceString(item, resp, shouldCache, false);
     }
 
-    public static boolean handleResponceString(ArticleItem item,String resp,boolean shouldCache,boolean cacheImage){
+    public static boolean handleResponceString(ArticleItem item, String resp, boolean shouldCache, boolean cacheImage) {
         Document doc = Jsoup.parse(resp);
         Elements newsHeadlines = doc.select(".blogs");
         //item.setFrom(newsHeadlines.select(".where").html());
         item.setPublishedTime(newsHeadlines.select(".d_time").html());
 
         Elements content = newsHeadlines.select(".infos");
-        if(cacheImage){
+        if (cacheImage) {
             Elements images = content.select("img");
-            for(Element image:images){
-                Bitmap img = ImageLoader.getInstance().loadImageSync(image.attr("src"), MyApplication.getDefaultDisplayOption());
-                if(img!=null) {
+            for (Element image : images) {
+                String pic = image.attr("src").indexOf("http") > -1 ? image.attr("src") : "http://guolingfa.cn/" + image.attr("src");
+                Bitmap img = ImageLoader.getInstance().loadImageSync(pic, MyApplication.getDefaultDisplayOption());
+                if (img != null) {
                     img.recycle();
                 }
             }
         }
         item.setArticleContent(content.html());
-        if(item.getArticleContent()!=null&&item.getArticleContent().length()>0){
-            if(shouldCache) {
+        if (item.getArticleContent() != null && item.getArticleContent().length() > 0) {
+            if (shouldCache) {
                 FileCacheKit.getInstance().put(item.getArticleId(), Toolkit.getGson().toJson(item));
             }
             return true;
-        }else{
+        } else {
             return false;
         }
     }

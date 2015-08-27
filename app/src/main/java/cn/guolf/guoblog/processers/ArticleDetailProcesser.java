@@ -63,6 +63,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
  * Created by guolf on 7/19/15.
+ * todo 文章内包含audio标签，此页销毁时会造成内存泄露
  */
 public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDetailProvider>
         implements DataProviderCallback<String> {
@@ -320,6 +321,7 @@ public class ArticleDetailProcesser extends BaseProcesserImpl<String, ArticleDet
 
     @Override
     public void onDestroy() {
+        ((ViewGroup) mWebView.getParent()).removeAllViews();
         mWebView.stopLoading();
         mWebView.destroy();
     }

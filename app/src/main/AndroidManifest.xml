@@ -50,7 +50,7 @@
             android:value="${CHANNEL_NAME}" />
 
         <service
-            android:name=".dexposed.DownloadService"
+            android:name=".dexposed.DexposedService"
             android:exported="false">
             <intent-filter>
                 <action android:name="cn.guolf.guoblog.dexposed.action.PATCH"></action>

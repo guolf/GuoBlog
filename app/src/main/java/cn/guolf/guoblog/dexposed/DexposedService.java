@@ -25,43 +25,19 @@ import cn.guolf.guoblog.lib.kits.Toolkit;
 /**
  * 1、判断当前机型是否支持dexposed，以及版本是否大于5.0
  * 2、判断当前版本是否存在patch
- * 3、下载patch文件
+ * 3、判断patch是否已存在，不存在则下载patch文件
  * 4、判断patch与当前应用签名是否相同
  * 5、加载patch
  * json 格式
  * {"apkVersion":"1.0","flag":"1","patchUrl":"http://10.168.3.102/app-debug.apk"}
  */
-public class DownloadService extends IntentService {
+public class DexposedService extends IntentService {
 
     public static final String ACTION_PATCH = "cn.guolf.guoblog.dexposed.action.PATCH";
     public static final String EXTRA_PARAM1 = "cn.guolf.guoblog.dexposed.extra.URL";
+    private static final String urlPath = MyApplication.getInstance().getCacheDir().getAbsolutePath();
+    private static String fileName = "";
 
-    FileAsyncHttpResponseHandler fileAsyncHttpResponseHandler = new FileAsyncHttpResponseHandler(new File(MyApplication.getInstance().getCacheDir().getAbsolutePath() + "test.apk")) {
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
-            LogKits.e(throwable.getMessage());
-        }
-
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, File file) {
-            // 下载成功，将apk与当前应用对比签名
-            LogKits.i("file:" + file.getAbsolutePath());
-            String sig1 = Toolkit.getApkSignature(file.getAbsolutePath());
-            String sig2 = Toolkit.getInstallPackageSignature(MyApplication.getInstance(), "cn.guolf.guoblog");
-            LogKits.i("sig1:" + sig1 + "\nsig2:" + sig2);
-            if (sig1.equals(sig2)) {
-                PatchResult result = PatchMain.load(MyApplication.getInstance(), file.getAbsolutePath(), null);
-                if (result.isSuccess()) {
-                    LogKits.e("patch success!");
-                } else {
-                    CrashReport.postCatchedException(result.getThrowbale());
-                }
-            } else {
-                LogKits.i("签名不符");
-            }
-        }
-    };
     ResponseHandlerInterface handlerInterface = new GsonHttpResponseHandler<HotPatch>
             (new TypeToken<HotPatch>() {
             }) {
@@ -79,16 +55,53 @@ public class DownloadService extends IntentService {
         @Override
         public void onSuccess(int statusCode, Header[] headers, String responseString, HotPatch patch) {
             if (patch.getFlag().equals("1")) {
-                // 存在补丁包，下载
-                NetKit.getInstance().downloadFile(patch.getPatchUrl(), fileAsyncHttpResponseHandler);
+                // 发现当前版本补丁包，判断是否已下载
+                fileName = patch.getPatchUrl().substring(patch.getPatchUrl().lastIndexOf("/"));
+                String fullPath = urlPath + fileName;
+                File apk = new File(fullPath);
+                LogKits.i(fullPath);
+                if (apk.exists()) {
+                    LogKits.i("文件已存在，go patch");
+                    runPatch(fullPath);
+                } else {
+                    LogKits.i("文件不存在，go down");
+                    NetKit.getInstance().downloadFile(patch.getPatchUrl(), new FileAsyncHttpResponseHandler(apk) {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
+                            CrashReport.postCatchedException(throwable);
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, File file) {
+                            runPatch(file.getAbsolutePath());
+                        }
+                    });
+                }
             }
         }
     };
     private boolean isSupport = false;
     private boolean isLDevice = false;
 
-    public DownloadService() {
-        super("DownloadService");
+    public DexposedService() {
+        super("DexposedService");
+    }
+
+    private void runPatch(String path) {
+        // 将apk与当前应用对比签名
+        String sig1 = Toolkit.getApkSignature(path);
+        String sig2 = Toolkit.getInstallPackageSignature(MyApplication.getInstance(), "cn.guolf.guoblog");
+        LogKits.i("sig1:" + sig1 + "\nsig2:" + sig2);
+        if (sig1.equals(sig2)) {
+            PatchResult result = PatchMain.load(MyApplication.getInstance(), path, null);
+            if (result.isSuccess()) {
+                LogKits.i("patch success!");
+            } else {
+                CrashReport.postCatchedException(result.getThrowbale());
+            }
+        } else {
+            LogKits.i("签名不符");
+        }
     }
 
     @Override
@@ -97,13 +110,13 @@ public class DownloadService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_PATCH.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                handleActionFoo(param1);
+                handleAction(param1);
             }
         }
     }
 
-    private void handleActionFoo(String param1) {
-        LogKits.i("param1:" + param1);
+    private void handleAction(String param1) {
+        // 判断是否支持dexposed
         isSupport = DexposedBridge.canDexposed(MyApplication.getInstance());
         isLDevice = android.os.Build.VERSION.SDK_INT >= 21;
         if (isSupport && !isLDevice) {

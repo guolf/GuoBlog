@@ -26,3 +26,7 @@
 #    public static **[] values();
 #    public static ** valueOf(java.lang.String);
 #}
+
+# LeakCanary
+-keep class org.eclipse.mat.** { *; }
+-keep class com.squareup.leakcanary.** { *; }

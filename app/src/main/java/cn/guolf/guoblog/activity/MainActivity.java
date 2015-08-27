@@ -14,7 +14,7 @@ import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
 import cn.guolf.guoblog.R;
-import cn.guolf.guoblog.dexposed.DownloadService;
+import cn.guolf.guoblog.dexposed.DexposedService;
 import cn.guolf.guoblog.fragments.NavigationDrawerFragment;
 import cn.guolf.guoblog.fragments.UpdateFragment;
 import cn.guolf.guoblog.lib.kits.PrefKit;
@@ -69,8 +69,8 @@ public class MainActivity extends BaseToolBarActivity implements NavigationDrawe
 
     private void runPatch() {
         Intent intent = new Intent();
-        intent.setAction(DownloadService.ACTION_PATCH);
-        intent.putExtra(DownloadService.EXTRA_PARAM1, "http://10.168.3.102/patch.json");
+        intent.setAction(DexposedService.ACTION_PATCH);
+        intent.putExtra(DexposedService.EXTRA_PARAM1, "http://10.168.3.102/patch.json");
         startService(intent);
     }
 
