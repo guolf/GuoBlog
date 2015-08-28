@@ -9,6 +9,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.squareup.leakcanary.LeakCanary;
 import com.taobao.android.dexposed.DexposedBridge;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
@@ -54,7 +55,7 @@ public class MyApplication extends Application {
         initImageLoader(getApplicationContext());
         mDbUtils = DbUtils.create(this);
         //腾讯Bugly设置
-        CrashReport.initCrashReport(this, "1103444121", false);
+        CrashReport.initCrashReport(this, "1103444121", BuildConfig.DEBUG);
         // 友盟统计相关设置
         MobclickAgent.setCatchUncaughtExceptions(false);
         MobclickAgent.setDebugMode(BuildConfig.DEBUG);
@@ -63,6 +64,8 @@ public class MyApplication extends Application {
 
         // dexposed
         DexposedBridge.canDexposed(this);
+
+        LeakCanary.install(this);
     }
 
     public void initImageLoader(Context context) {
