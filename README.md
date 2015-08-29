@@ -81,6 +81,18 @@ http://www.guolingfa.cn
 
 * **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
 
+> **dexposed**
+
+* **Link:** [https://github.com/alibaba/dexposed](https://github.com/alibaba/dexposed)
+
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
+
+> **leakcanary**
+
+* **Link:** [https://github.com/square/leakcanary](https://github.com/square/leakcanary)
+
+* **License:** `Licensed under the Apache License, Version 2.0 (the "License");`
+
 ###License
 
 ```
